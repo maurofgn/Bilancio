@@ -1,0 +1,516 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Bilancio_1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AccountCee">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="SeqNo" Type="int" Nullable="false" />
+          <Property Name="Summary" Type="bit" Nullable="false" />
+          <Property Name="Total" Type="bit" Nullable="false" />
+          <Property Name="Debit" Type="bit" Nullable="false" />
+          <Property Name="NodeType" Type="int" />
+          <Property Name="Parent_ID" Type="int" />
+          <Property Name="Parent_ID1" Type="int" />
+        </EntityType>
+        <EntityType Name="AccountChart">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="AccountCee_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="Avis">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="dateCreated" Type="datetime" Nullable="false" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="City" Type="nvarchar(max)" />
+          <Property Name="PostalCode" Type="nvarchar" MaxLength="5" />
+          <Property Name="Region" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="Phone" Type="nvarchar(max)" />
+          <Property Name="ContactName" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Document">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="dateReg" Type="datetime" Nullable="false" />
+          <Property Name="dateDoc" Type="datetime" Nullable="false" />
+          <Property Name="DocNr" Type="nvarchar" MaxLength="20" />
+          <Property Name="Note" Type="nvarchar(max)" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="DocumentType_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DocumentRow">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="AccountChart_ID" Type="int" Nullable="false" />
+          <Property Name="Document_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DocumentType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="ModelName" Type="nvarchar(max)" />
+          <Property Name="FormatType" Type="int" />
+          <Property Name="OutFileName" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_dbo_AccountCee_dbo_AccountCee_Parent_ID1">
+          <End Role="AccountCee" Type="Self.AccountCee" Multiplicity="0..1" />
+          <End Role="AccountCee1" Type="Self.AccountCee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountCee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AccountCee1">
+              <PropertyRef Name="Parent_ID1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AccountChart_dbo_AccountCee_AccountCee_ID">
+          <End Role="AccountCee" Type="Self.AccountCee" Multiplicity="0..1" />
+          <End Role="AccountChart" Type="Self.AccountChart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountCee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AccountChart">
+              <PropertyRef Name="AccountCee_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Document_dbo_DocumentType_DocumentType_ID">
+          <End Role="DocumentType" Type="Self.DocumentType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Document" Type="Self.Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="DocumentType_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_DocumentRow_dbo_AccountChart_AccountChart_ID">
+          <End Role="AccountChart" Type="Self.AccountChart" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DocumentRow" Type="Self.DocumentRow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountChart">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DocumentRow">
+              <PropertyRef Name="AccountChart_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_DocumentRow_dbo_Document_Document_ID">
+          <End Role="Document" Type="Self.Document" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DocumentRow" Type="Self.DocumentRow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Document">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DocumentRow">
+              <PropertyRef Name="Document_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Bilancio_1ModelStoreContainer">
+          <EntitySet Name="AccountCee" EntityType="Self.AccountCee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AccountChart" EntityType="Self.AccountChart" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Avis" EntityType="Self.Avis" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Document" EntityType="Self.Document" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DocumentRow" EntityType="Self.DocumentRow" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DocumentType" EntityType="Self.DocumentType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Report" EntityType="Self.Report" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_AccountCee_dbo_AccountCee_Parent_ID1" Association="Self.FK_dbo_AccountCee_dbo_AccountCee_Parent_ID1">
+            <End Role="AccountCee" EntitySet="AccountCee" />
+            <End Role="AccountCee1" EntitySet="AccountCee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AccountChart_dbo_AccountCee_AccountCee_ID" Association="Self.FK_dbo_AccountChart_dbo_AccountCee_AccountCee_ID">
+            <End Role="AccountCee" EntitySet="AccountCee" />
+            <End Role="AccountChart" EntitySet="AccountChart" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Document_dbo_DocumentType_DocumentType_ID" Association="Self.FK_dbo_Document_dbo_DocumentType_DocumentType_ID">
+            <End Role="DocumentType" EntitySet="DocumentType" />
+            <End Role="Document" EntitySet="Document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_DocumentRow_dbo_AccountChart_AccountChart_ID" Association="Self.FK_dbo_DocumentRow_dbo_AccountChart_AccountChart_ID">
+            <End Role="AccountChart" EntitySet="AccountChart" />
+            <End Role="DocumentRow" EntitySet="DocumentRow" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_DocumentRow_dbo_Document_Document_ID" Association="Self.FK_dbo_DocumentRow_dbo_Document_Document_ID">
+            <End Role="Document" EntitySet="Document" />
+            <End Role="DocumentRow" EntitySet="DocumentRow" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Bilancio_1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AccountCee">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="SeqNo" Type="Int32" Nullable="false" />
+          <Property Name="Summary" Type="Boolean" Nullable="false" />
+          <Property Name="Total" Type="Boolean" Nullable="false" />
+          <Property Name="Debit" Type="Boolean" Nullable="false" />
+          <Property Name="NodeType" Type="Int32" />
+          <Property Name="Parent_ID" Type="Int32" />
+          <Property Name="Parent_ID1" Type="Int32" />
+          <NavigationProperty Name="AccountCee1" Relationship="Self.FK_dbo_AccountCee_dbo_AccountCee_Parent_ID1" FromRole="AccountCee" ToRole="AccountCee1" />
+          <NavigationProperty Name="AccountCee2" Relationship="Self.FK_dbo_AccountCee_dbo_AccountCee_Parent_ID1" FromRole="AccountCee1" ToRole="AccountCee" />
+          <NavigationProperty Name="AccountChart" Relationship="Self.FK_dbo_AccountChart_dbo_AccountCee_AccountCee_ID" FromRole="AccountCee" ToRole="AccountChart" />
+        </EntityType>
+        <EntityType Name="AccountChart">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="AccountCee_ID" Type="Int32" />
+          <NavigationProperty Name="AccountCee" Relationship="Self.FK_dbo_AccountChart_dbo_AccountCee_AccountCee_ID" FromRole="AccountChart" ToRole="AccountCee" />
+          <NavigationProperty Name="DocumentRow" Relationship="Self.FK_dbo_DocumentRow_dbo_AccountChart_AccountChart_ID" FromRole="AccountChart" ToRole="DocumentRow" />
+        </EntityType>
+        <EntityType Name="Avis">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="dateCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Region" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ContactName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Document">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="dateReg" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="dateDoc" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DocNr" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="DocumentType_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DocumentType" Relationship="Self.FK_dbo_Document_dbo_DocumentType_DocumentType_ID" FromRole="Document" ToRole="DocumentType" />
+          <NavigationProperty Name="DocumentRow" Relationship="Self.FK_dbo_DocumentRow_dbo_Document_Document_ID" FromRole="Document" ToRole="DocumentRow" />
+        </EntityType>
+        <EntityType Name="DocumentRow">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="AccountChart_ID" Type="Int32" Nullable="false" />
+          <Property Name="Document_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AccountChart" Relationship="Self.FK_dbo_DocumentRow_dbo_AccountChart_AccountChart_ID" FromRole="DocumentRow" ToRole="AccountChart" />
+          <NavigationProperty Name="Document" Relationship="Self.FK_dbo_DocumentRow_dbo_Document_Document_ID" FromRole="DocumentRow" ToRole="Document" />
+        </EntityType>
+        <EntityType Name="DocumentType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Document" Relationship="Self.FK_dbo_Document_dbo_DocumentType_DocumentType_ID" FromRole="DocumentType" ToRole="Document" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="ModelName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FormatType" Type="Int32" />
+          <Property Name="OutFileName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_dbo_AccountCee_dbo_AccountCee_Parent_ID1">
+          <End Role="AccountCee" Type="Self.AccountCee" Multiplicity="0..1" />
+          <End Role="AccountCee1" Type="Self.AccountCee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountCee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AccountCee1">
+              <PropertyRef Name="Parent_ID1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AccountChart_dbo_AccountCee_AccountCee_ID">
+          <End Role="AccountCee" Type="Self.AccountCee" Multiplicity="0..1" />
+          <End Role="AccountChart" Type="Self.AccountChart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountCee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AccountChart">
+              <PropertyRef Name="AccountCee_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_DocumentRow_dbo_AccountChart_AccountChart_ID">
+          <End Role="AccountChart" Type="Self.AccountChart" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DocumentRow" Type="Self.DocumentRow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountChart">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DocumentRow">
+              <PropertyRef Name="AccountChart_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Document_dbo_DocumentType_DocumentType_ID">
+          <End Role="DocumentType" Type="Self.DocumentType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Document" Type="Self.Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="DocumentType_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_DocumentRow_dbo_Document_Document_ID">
+          <End Role="Document" Type="Self.Document" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DocumentRow" Type="Self.DocumentRow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Document">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DocumentRow">
+              <PropertyRef Name="Document_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Bilancio_1Entities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AccountCee" EntityType="Self.AccountCee" />
+          <EntitySet Name="AccountChart" EntityType="Self.AccountChart" />
+          <EntitySet Name="Avis" EntityType="Self.Avis" />
+          <EntitySet Name="Document" EntityType="Self.Document" />
+          <EntitySet Name="DocumentRow" EntityType="Self.DocumentRow" />
+          <EntitySet Name="DocumentType" EntityType="Self.DocumentType" />
+          <EntitySet Name="Report" EntityType="Self.Report" />
+          <AssociationSet Name="FK_dbo_AccountCee_dbo_AccountCee_Parent_ID1" Association="Self.FK_dbo_AccountCee_dbo_AccountCee_Parent_ID1">
+            <End Role="AccountCee" EntitySet="AccountCee" />
+            <End Role="AccountCee1" EntitySet="AccountCee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AccountChart_dbo_AccountCee_AccountCee_ID" Association="Self.FK_dbo_AccountChart_dbo_AccountCee_AccountCee_ID">
+            <End Role="AccountCee" EntitySet="AccountCee" />
+            <End Role="AccountChart" EntitySet="AccountChart" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_DocumentRow_dbo_AccountChart_AccountChart_ID" Association="Self.FK_dbo_DocumentRow_dbo_AccountChart_AccountChart_ID">
+            <End Role="AccountChart" EntitySet="AccountChart" />
+            <End Role="DocumentRow" EntitySet="DocumentRow" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Document_dbo_DocumentType_DocumentType_ID" Association="Self.FK_dbo_Document_dbo_DocumentType_DocumentType_ID">
+            <End Role="DocumentType" EntitySet="DocumentType" />
+            <End Role="Document" EntitySet="Document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_DocumentRow_dbo_Document_Document_ID" Association="Self.FK_dbo_DocumentRow_dbo_Document_Document_ID">
+            <End Role="Document" EntitySet="Document" />
+            <End Role="DocumentRow" EntitySet="DocumentRow" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Bilancio_1ModelStoreContainer" CdmEntityContainer="Bilancio_1Entities1">
+          <EntitySetMapping Name="AccountCee">
+            <EntityTypeMapping TypeName="Bilancio_1Model.AccountCee">
+              <MappingFragment StoreEntitySet="AccountCee">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="SeqNo" ColumnName="SeqNo" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="NodeType" ColumnName="NodeType" />
+                <ScalarProperty Name="Parent_ID" ColumnName="Parent_ID" />
+                <ScalarProperty Name="Parent_ID1" ColumnName="Parent_ID1" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccountChart">
+            <EntityTypeMapping TypeName="Bilancio_1Model.AccountChart">
+              <MappingFragment StoreEntitySet="AccountChart">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="AccountCee_ID" ColumnName="AccountCee_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Avis">
+            <EntityTypeMapping TypeName="Bilancio_1Model.Avis">
+              <MappingFragment StoreEntitySet="Avis">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Document">
+            <EntityTypeMapping TypeName="Bilancio_1Model.Document">
+              <MappingFragment StoreEntitySet="Document">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="dateReg" ColumnName="dateReg" />
+                <ScalarProperty Name="dateDoc" ColumnName="dateDoc" />
+                <ScalarProperty Name="DocNr" ColumnName="DocNr" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="DocumentType_ID" ColumnName="DocumentType_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocumentRow">
+            <EntityTypeMapping TypeName="Bilancio_1Model.DocumentRow">
+              <MappingFragment StoreEntitySet="DocumentRow">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="AccountChart_ID" ColumnName="AccountChart_ID" />
+                <ScalarProperty Name="Document_ID" ColumnName="Document_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocumentType">
+            <EntityTypeMapping TypeName="Bilancio_1Model.DocumentType">
+              <MappingFragment StoreEntitySet="DocumentType">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Report">
+            <EntityTypeMapping TypeName="Bilancio_1Model.Report">
+              <MappingFragment StoreEntitySet="Report">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
+                <ScalarProperty Name="FormatType" ColumnName="FormatType" />
+                <ScalarProperty Name="OutFileName" ColumnName="OutFileName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Nessuno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="72cb0eda5a494c4099bce9d2ead2766a" Name="Diagram1">
+        <EntityTypeShape EntityType="Bilancio_1Model.AccountCee" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="Bilancio_1Model.AccountChart" Width="1.5" PointX="3" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Bilancio_1Model.Avis" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Bilancio_1Model.Document" Width="1.5" PointX="3" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Bilancio_1Model.DocumentRow" Width="1.5" PointX="5.25" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Bilancio_1Model.DocumentType" Width="1.5" PointX="0.75" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Bilancio_1Model.Report" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="Bilancio_1Model.FK_dbo_AccountCee_dbo_AccountCee_Parent_ID1" ManuallyRouted="false" />
+        <AssociationConnector Association="Bilancio_1Model.FK_dbo_AccountChart_dbo_AccountCee_AccountCee_ID" ManuallyRouted="false" />
+        <AssociationConnector Association="Bilancio_1Model.FK_dbo_DocumentRow_dbo_AccountChart_AccountChart_ID" ManuallyRouted="false" />
+        <AssociationConnector Association="Bilancio_1Model.FK_dbo_Document_dbo_DocumentType_DocumentType_ID" ManuallyRouted="false" />
+        <AssociationConnector Association="Bilancio_1Model.FK_dbo_DocumentRow_dbo_Document_Document_ID" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
