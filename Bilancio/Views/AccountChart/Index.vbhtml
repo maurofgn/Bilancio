@@ -1,24 +1,35 @@
-﻿@ModelType IEnumerable(Of Bilancio.Models.AccountChart)
-
+﻿@ModelType PagedList.IPagedList(Of Bilancio.Models.AccountChart)
+@Imports PagedList.Mvc
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @Code
-    ViewData("Title") = "Index"
+    ViewBag.Title = "Conti del Piano dei Conti"
 End Code
 
-<h2>Index</h2>
+<h2>Piano dei conti</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
+
+@Using Html.BeginForm("Index", "AccountChart", FormMethod.Get)
+    @<p>
+        @Html.TextBox("SearchString", TryCast(ViewBag.CurrentFilter, String))
+        <input type="submit" value="Search" />
+    </p>
+End Using
+
 <table>
     <tr>
         <th>
-            @Html.DisplayNameFor(Function(model) model.Code)
+            @Html.ActionLink("Codice", "Index", New With {.sortOrder = ViewBag.CodeSortParm, .currentFilter = ViewBag.CurrentFilter})
         </th>
         <th>
-            @Html.DisplayNameFor(Function(model) model.Name)
+            @Html.ActionLink("Descrizione", "Index", New With {.sortOrder = ViewBag.NameSortParm, .currentFilter = ViewBag.CurrentFilter})
         </th>
         <th>
-            @Html.DisplayNameFor(Function(model) model.Active)
+            Attivo
+            @*@Html.DisplayNameFor(Function(model) model.Active)*@
         </th>
         <th></th>
     </tr>
@@ -44,3 +55,9 @@ End Code
 Next
 
 </table>
+<br />
+<div class="pagination" style="display:inline-block; vertical-align:middle;">
+    Page @IIf(Model.PageCount < Model.PageNumber, 0, Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, Function(page) Url.Action("Index", _
+        New With {page, .sortOrder = ViewBag.CurrentSort, .currentFilter = ViewBag.CurrentFilter}))
+</div>

@@ -10,6 +10,9 @@ Namespace DAL
         Inherits DropCreateDatabaseIfModelChanges(Of BilancioContext)
         Protected Overrides Sub Seed(ByVal context As BilancioContext)
 
+            'context.Database.ExecuteSqlCommand("alter table AccountCee add constraint CeeUniqueCode unique (Code)")
+            'context.Database.ExecuteSqlCommand("alter table AccountChart add constraint ChartUniqueCode unique (Code)")
+
             context.Aviss.Add(New Avis() With {
                     .Name = "Comunale Morrovalle",
                     .Address = "piazza Vittorio Emanuele II n.12",
@@ -308,6 +311,16 @@ Namespace DAL
             }
             ricaviList3.ForEach(Function(s) context.AccountCees.Add(s))
             context.SaveChanges()
+
+
+            'load piano dei conti interno dedotto dalle foglie dal pc cee
+            Dim query = From c In context.AccountCees
+                Where c.Summary = False And c.NodeType = NodeType.ALTRO
+                Order By c.Code, c.Name
+
+            query.ToList().ForEach(Function(s) context.AccountCharts.Add(New AccountChart() With {.Name = s.Name, .Code = s.Code, .AccountCee = s}))
+            context.SaveChanges()
+
         End Sub
 
     End Class

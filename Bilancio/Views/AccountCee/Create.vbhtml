@@ -29,13 +29,13 @@ End Code
             @Html.ValidationMessageFor(Function(model) model.Name)
         </div>
 
-        <div class="editor-label">
+        @*<div class="editor-label">
             @Html.LabelFor(Function(model) model.Active)
         </div>
         <div class="editor-field">
             @Html.EditorFor(Function(model) model.Active)
             @Html.ValidationMessageFor(Function(model) model.Active)
-        </div>
+        </div>*@
 
         <div class="editor-label">
             @Html.LabelFor(Function(model) model.SeqNo)
@@ -61,17 +61,20 @@ End Code
             @Html.ValidationMessageFor(Function(model) model.Total)
         </div>
 
-        <div class="editor-label">
+        @*<div class="editor-label">
             @Html.LabelFor(Function(model) model.Debit)
         </div>
         <div class="editor-field">
             @Html.EditorFor(Function(model) model.Debit)
             @Html.ValidationMessageFor(Function(model) model.Debit)
-        </div>
+        </div>*@
 
          <div class="editor-field">
-            @Html.DropDownList("Parent", String.Empty)
-            @Html.ValidationMessageFor(Function(model) model.Parent)
+            @*"-please select item-"*@
+            @*@Html.DropDownList("ParentID", String.Empty)*@
+            @Html.DropDownList("ParentID", "-Fai una scelta-")
+            @*@Html.DropDownListFor(Function(model) model.ParentID, CType(ViewBag.ParentID, List(Of SelectListItem)), String.Empty)*@
+            @Html.ValidationMessageFor(Function(model) model.ParentID)
          </div>
 
         <p>

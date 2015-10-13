@@ -1,6 +1,9 @@
 ﻿Imports System.Data.Entity
 Imports Bilancio.Models
 Imports Bilancio.DAL
+Imports PagedList
+Imports System.Data.Entity.Validation
+
 
 Public Class AccountChartController
     Inherits System.Web.Mvc.Controller
@@ -10,8 +13,44 @@ Public Class AccountChartController
     '
     ' GET: /AccountChart/
 
-    Function Index() As ActionResult
-        Return View(db.AccountCharts.ToList())
+    '    Function Index() As ActionResult
+    Function Index(ByVal sortOrder As String, currentFilter As String, searchString As String, page As Integer?) As ActionResult
+
+        ViewBag.CurrentSort = sortOrder
+        ViewBag.NameSortParm = If(String.IsNullOrEmpty(sortOrder), "name_desc", String.Empty)
+        ViewBag.CodeSortParm = If(sortOrder = "code", "code_desc", "code")
+
+        If Not searchString Is Nothing Then
+            page = 1
+        Else
+            searchString = currentFilter
+        End If
+
+        ViewBag.CurrentFilter = searchString
+
+        Dim lines = From s In db.AccountCharts Select s
+
+        If Not String.IsNullOrEmpty(searchString) Then
+            lines = lines.Where(Function(s) s.Name.ToUpper().Contains(searchString.ToUpper()) _
+                                                  Or s.Code.ToUpper().Contains(searchString.ToUpper()))
+        End If
+
+        Select Case sortOrder
+            Case "name_desc"
+                lines = lines.OrderByDescending(Function(s) s.Name)
+            Case "code"
+                lines = lines.OrderBy(Function(s) s.Code)
+            Case "code_desc"
+                lines = lines.OrderByDescending(Function(s) s.Code)
+            Case Else
+                lines = lines.OrderBy(Function(s) s.Name).ThenBy(Function(s) s.Code)
+        End Select
+
+        Dim pageNumber As Integer = If(page, 1)
+        Dim pageSize As Integer = 10
+
+        Return View(lines.ToPagedList(pageNumber, pageSize))
+
     End Function
 
     '
@@ -29,6 +68,7 @@ Public Class AccountChartController
     ' GET: /AccountChart/Create
 
     Function Create() As ActionResult
+        PopulateParentsDropDownList()
         Return View()
     End Function
 
@@ -38,12 +78,44 @@ Public Class AccountChartController
     <HttpPost()> _
     <ValidateAntiForgeryToken()> _
     Function Create(ByVal accountchart As AccountChart) As ActionResult
+
+
+        'If ModelState.IsValid AndAlso db.AccountCharts.Any(Function(o) o.Code = accountchart.Code) Then
+        '   "esiste un codice con lo stesso valore"
+        'End If
+
         If ModelState.IsValid Then
+
+            'If db.AccountCharts.Any(Function(o) o.Code = accountchart.Code) Then
+            '    ' Match! "esiste un codice con lo stesso valore"
+            'Else
             db.AccountCharts.Add(accountchart)
-            db.SaveChanges()
-            Return RedirectToAction("Index")
+
+
+            Try
+                db.SaveChanges()
+                Return RedirectToAction("Index")
+            Catch ex As DbEntityValidationException
+
+                ''TODO: gli errori vanno estratti e ritornati nella view
+
+                db.GetValidationErrors.ToList().ForEach(Sub(c)
+                                                            c.ValidationErrors.ToList().ForEach(Sub(e) Trace.WriteLine(e.ErrorMessage))
+                                                        End Sub)
+
+                'Dim validationErrors As String = String.Join(",", db.GetValidationErrors.ToList().ForEach(Function(c) c.ValidationErrors))
+
+                'Dim validationErrors As String = String.Join(",",
+                'ModelState.Values.Where(Function(E) E.Errors.Count > 0) _
+                '    .SelectMany(Function(E) E.Errors) _
+                '    .[Select](Function(E) E.ErrorMessage).ToArray())
+
+            End Try
+            'End If
+
         End If
 
+        PopulateParentsDropDownList(accountchart.AccountCee)
         Return View(accountchart)
     End Function
 
@@ -55,6 +127,8 @@ Public Class AccountChartController
         If IsNothing(accountchart) Then
             Return HttpNotFound()
         End If
+
+        PopulateParentsDropDownList(accountchart.AccountCee)
         Return View(accountchart)
     End Function
 
@@ -70,6 +144,7 @@ Public Class AccountChartController
             Return RedirectToAction("Index")
         End If
 
+        PopulateParentsDropDownList(accountchart.AccountCee)
         Return View(accountchart)
     End Function
 
@@ -100,6 +175,24 @@ Public Class AccountChartController
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         db.Dispose()
         MyBase.Dispose(disposing)
+    End Sub
+
+    Private Sub PopulateParentsDropDownList(Optional ByVal selectedParent As AccountCee = Nothing)
+
+        Dim query = From c In db.AccountCees
+        Where c.Summary = False And c.NodeType = NodeType.ALTRO
+        Order By c.Code, c.Name
+        'Select c.ID, c.Name, c.Code
+
+        Dim iappo As Integer
+        If (IsNothing(selectedParent)) Then
+            iappo = 0
+        Else
+            iappo = selectedParent.ID
+        End If
+
+        ViewBag.AccountCeeID = New SelectList(query.ToList(), "ID", "Name", iappo)
+
     End Sub
 
 End Class

@@ -37,6 +37,11 @@ End Code
             @Html.ValidationMessageFor(Function(model) model.Active)
         </div>
 
+         <div class="editor-field">
+             @Html.DropDownList("AccountCeeID", String.Empty)
+             @Html.ValidationMessageFor(Function(model) model.AccountCeeID)
+         </div>
+
         <p>
             <input type="submit" value="Create" />
         </p>

@@ -10,6 +10,7 @@ Namespace Models
         <Required>
         <StringLength(20, MinimumLength:=1, ErrorMessage:="La lunghezza massima é 20 caratteri.")>
         <Display(Name:="Codice")>
+        <Index("codeIndex", IsUnique:=True)>
         Public Property Code As String
 
         <Required>

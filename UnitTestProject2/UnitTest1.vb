@@ -1,5 +1,6 @@
 ﻿Imports System.Text
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
+'Imports Bilancio.Models.AccountCee
 
 <TestClass()> Public Class UnitTest1
 
@@ -180,5 +181,48 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
         Next
 
     End Sub
+
+    Sub TestLoadChart()
+
+        Dim context As New BilaTest    'BilancioContext
+
+        '        Dim pcs As List(Of AccountChart)
+
+
+        Dim q = From c In context.AccountCee
+            Where c.Summary = False And c.NodeType = 7
+            Order By c.Code, c.Name()
+        '            Select New AccountChart() With {.AccountCee = c, .Code = c.Code, .Name = c.Name}
+
+        'q.ToList().ForEach(Sub(a)
+        '                       Dim ac As AccountChart = New AccountChart() With {.AccountCee = a, .Code = a.Code, .Name = a.Name}
+        '                       Trace.WriteLine(ac)
+        '                   End Sub)
+        q.ToList().ForEach(Sub(a) Console.WriteLine(a.Code))
+
+        'Try
+        '    pcs = (From c In context.AccountCee
+        '    Where c.Summary = False And c.NodeType = 7
+        '            Order By c.Code, c.Name()
+        '            Select New AccountChart() With {.AccountCee = c, .Code = c.Code, .Name = c.Name}
+        '            ).ToList()
+
+        'Catch ex As Exception
+        '    Trace.WriteLine(ex.Message)
+        'End Try
+
+
+        'pcs.ForEach(Sub(s)
+        '                '                        context.AccountChart.Add(s)
+        '                Trace.WriteLine(s)
+        '            End Sub
+        '                )
+
+
+    End Sub
+
+    '        pcs.ForEach(Function(s) context.AccountCharts.Add(s))
+    '    context.SaveChanges()
+    'End Sub
 
 End Class

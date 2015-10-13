@@ -10,6 +10,7 @@ Namespace Models
         <Required>
         <StringLength(20, MinimumLength:=1, ErrorMessage:="La lunghezza massima é 20 caratteri.")>
         <Display(Name:="Codice")>
+        <Index("codeIndex", IsUnique:=True)>
         Public Property Code As String
 
         <Required>
@@ -32,6 +33,8 @@ Namespace Models
         '<Display(Name:="Ultimo Aggiornamento")>
         'Public Property lastUpdate As DateTime = DateTime.Now
 
+        <ForeignKey("AccountCee")>
+        Public Property AccountCeeID As Integer?
 
         Public Overridable Property AccountCee As AccountCee
         Public Overridable Property DocumentRows As ICollection(Of DocumentRow)

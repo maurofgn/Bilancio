@@ -75,8 +75,11 @@ End Code
             @Html.LabelFor(Function(model) model.Parent)
          </div>
          <div class="editor-field">
-            @Html.DropDownList("Parent", String.Empty)
-            @Html.ValidationMessageFor(Function(model) model.Parent)
+            @Html.DropDownList("ParentID", String.Empty)
+
+            @*@Html.DropDownListFor(Function(model) model.ParentID, CType(ViewBag.ParentID, List(Of SelectListItem)), String.Empty)*@
+
+            @Html.ValidationMessageFor(Function(model) model.ParentID)
          </div>
 
         <p>

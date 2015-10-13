@@ -2,6 +2,7 @@
 Imports Bilancio.Models
 Imports Bilancio.DAL
 Imports PagedList
+Imports System.Data.Entity.Validation
 
 
 Public Class AccountCeeController
@@ -124,10 +125,6 @@ Public Class AccountCeeController
     End Function
 
 
-
-
-
-
     <HttpPost()> _
     <ValidateAntiForgeryToken()> _
     Function Create(ByVal accountcee As AccountCee) As ActionResult
@@ -151,7 +148,7 @@ Public Class AccountCeeController
                     .SelectMany(Function(E) E.Errors) _
                     .[Select](Function(E) E.ErrorMessage).ToArray())
 
-            Trace.WriteLine(validationErrors)   'elenco erroricontenuti in validationErrors
+            Trace.WriteLine(validationErrors)   'elenco errori contenuti in validationErrors
         End If
 
         'loadListParent()
@@ -180,6 +177,7 @@ Public Class AccountCeeController
     <HttpPost()> _
     <ValidateAntiForgeryToken()> _
     Function Edit(ByVal accountcee As AccountCee) As ActionResult
+
         If ModelState.IsValid Then
             db.Entry(accountcee).State = EntityState.Modified
             db.SaveChanges()
@@ -270,15 +268,48 @@ Public Class AccountCeeController
     '    ViewBag.DepartmentID = New SelectList(departmentsQuery, "DepartmentID", "Name", selectedDepartment)
     'End Sub
 
-    Private Sub PopulateParentsDropDownList(Optional ByVal selectedParent As Object = Nothing)
+    'Crea una lista di valori da usare su una combo
+    Private Sub PopulateParentsDropDownList(Optional ByVal selectedParent As AccountCee = Nothing)
 
         Dim validTypeParents As Integer() = {NodeType.ATTIVO, NodeType.PASSIVO, NodeType.COSTI, NodeType.RICAVI, NodeType.ALTRO}
 
         Dim query = From c In db.AccountCees
         Where c.Summary = True And validTypeParents.Contains(c.NodeType)
         Order By c.Code, c.Name
+        Select c.ID, c.Name, c.Code
 
-        ViewBag.Parent = New SelectList(query, "ID", "Name", selectedParent)
+        Dim iappo As Integer
+        If (IsNothing(selectedParent)) Then
+            iappo = 0
+        Else
+            iappo = selectedParent.ID
+        End If
+
+        ViewBag.ParentID = New SelectList(query.ToList(), "ID", "Name", iappo)
+
+
+    End Sub
+
+    'crea una lista di SelectListItem 
+    Private Sub PopulateParentsDropDownListFor(Optional ByVal selectedParent As AccountCee = Nothing)
+
+        Dim selID As Integer
+        If (IsNothing(selectedParent)) Then
+            selID = 0
+        Else
+            selID = selectedParent.ID
+        End If
+
+        Dim validTypeParents As Integer() = {NodeType.ATTIVO, NodeType.PASSIVO, NodeType.COSTI, NodeType.RICAVI, NodeType.ALTRO}
+
+        Dim query = From c In db.AccountCees
+        Where c.Summary = True And validTypeParents.Contains(c.NodeType)
+        Order By c.Code, c.Name
+        Select New SelectListItem With
+             {.Text = c.Name, .Value = c.ID, .Selected = (c.ID = selID)}
+
+        ViewBag.ParentID = query.ToList()
+
     End Sub
 
     'elenco dei conti definiti parent
@@ -292,7 +323,6 @@ Public Class AccountCeeController
         Return query.ToList()
 
     End Function
-
 
 #End Region
 
