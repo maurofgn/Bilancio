@@ -49,4 +49,20 @@ End Using
 
 @Section Scripts
     @Scripts.Render("~/bundles/jqueryval")
+
+
+@*$(document).ready(function()
+{
+    var model = {EmailAddress: 'Hello, World!'};
+
+    var xhr = $.post('@Url.Action("SendEmail", "TournMaint")', model)
+        .success(function(data) {
+            $('body').append('!success!');
+            $('body').append(JSON.stringify(data));
+        })
+    .error(function() {$('body').append('!err!');} )
+    .complete(function() { $('body').append('!complete!');});
+});*@
+
 End Section
+

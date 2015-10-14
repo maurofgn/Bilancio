@@ -70,8 +70,6 @@ Namespace DAL
                 End If
             End If
 
-
-
             If (result.ValidationErrors.Count > 0) Then
                 Return result
             Else

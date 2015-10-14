@@ -47,7 +47,7 @@ Public Class AccountChartController
         End Select
 
         Dim pageNumber As Integer = If(page, 1)
-        Dim pageSize As Integer = 10
+        Dim pageSize As Integer = LINES_PER_PAGE
 
         Return View(lines.ToPagedList(pageNumber, pageSize))
 
@@ -79,40 +79,14 @@ Public Class AccountChartController
     <ValidateAntiForgeryToken()> _
     Function Create(ByVal accountchart As AccountChart) As ActionResult
 
-
-        'If ModelState.IsValid AndAlso db.AccountCharts.Any(Function(o) o.Code = accountchart.Code) Then
-        '   "esiste un codice con lo stesso valore"
-        'End If
-
         If ModelState.IsValid Then
-
-            'If db.AccountCharts.Any(Function(o) o.Code = accountchart.Code) Then
-            '    ' Match! "esiste un codice con lo stesso valore"
-            'Else
             db.AccountCharts.Add(accountchart)
-
-
             Try
                 db.SaveChanges()
                 Return RedirectToAction("Index")
             Catch ex As DbEntityValidationException
-
-                ''TODO: gli errori vanno estratti e ritornati nella view
-
-                db.GetValidationErrors.ToList().ForEach(Sub(c)
-                                                            c.ValidationErrors.ToList().ForEach(Sub(e) Trace.WriteLine(e.ErrorMessage))
-                                                        End Sub)
-
-                'Dim validationErrors As String = String.Join(",", db.GetValidationErrors.ToList().ForEach(Function(c) c.ValidationErrors))
-
-                'Dim validationErrors As String = String.Join(",",
-                'ModelState.Values.Where(Function(E) E.Errors.Count > 0) _
-                '    .SelectMany(Function(E) E.Errors) _
-                '    .[Select](Function(E) E.ErrorMessage).ToArray())
-
+                db.GetValidationErrors.ToList().ForEach(Sub(c) c.ValidationErrors.ToList().ForEach(Sub(e) ModelState.AddModelError(e.PropertyName, e.ErrorMessage)))
             End Try
-            'End If
-
         End If
 
         PopulateParentsDropDownList(accountchart.AccountCee)
@@ -140,8 +114,13 @@ Public Class AccountChartController
     Function Edit(ByVal accountchart As AccountChart) As ActionResult
         If ModelState.IsValid Then
             db.Entry(accountchart).State = EntityState.Modified
-            db.SaveChanges()
-            Return RedirectToAction("Index")
+
+            Try
+                db.SaveChanges()
+                Return RedirectToAction("Index")
+            Catch ex As DbEntityValidationException
+                db.GetValidationErrors.ToList().ForEach(Sub(c) c.ValidationErrors.ToList().ForEach(Sub(e) ModelState.AddModelError(e.PropertyName, e.ErrorMessage)))
+            End Try
         End If
 
         PopulateParentsDropDownList(accountchart.AccountCee)

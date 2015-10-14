@@ -72,7 +72,7 @@ Public Class AccountCeeController
         End Select
 
         Dim pageNumber As Integer = If(page, 1)
-        Dim pageSize As Integer = 10
+        Dim pageSize As Integer = LINES_PER_PAGE
 
         Return View(accs.ToPagedList(pageNumber, pageSize))
 
@@ -119,7 +119,6 @@ Public Class AccountCeeController
 
         Dim errorList As List(Of String) = query.ToList()
 
-
         Return errorList
 
     End Function
@@ -140,8 +139,13 @@ Public Class AccountCeeController
             End If
 
             db.AccountCees.Add(accountcee)
-            db.SaveChanges()
-            Return RedirectToAction("Index")
+
+            Try
+                db.SaveChanges()
+                Return RedirectToAction("Index")
+            Catch ex As DbEntityValidationException
+                db.GetValidationErrors.ToList().ForEach(Sub(c) c.ValidationErrors.ToList().ForEach(Sub(e) ModelState.AddModelError(e.PropertyName, e.ErrorMessage)))
+            End Try
         Else
             Dim validationErrors As String = String.Join(",",
                 ModelState.Values.Where(Function(E) E.Errors.Count > 0) _
@@ -180,8 +184,12 @@ Public Class AccountCeeController
 
         If ModelState.IsValid Then
             db.Entry(accountcee).State = EntityState.Modified
-            db.SaveChanges()
-            Return RedirectToAction("Index")
+            Try
+                db.SaveChanges()
+                Return RedirectToAction("Index")
+            Catch ex As DbEntityValidationException
+                db.GetValidationErrors.ToList().ForEach(Sub(c) c.ValidationErrors.ToList().ForEach(Sub(e) ModelState.AddModelError(e.PropertyName, e.ErrorMessage)))
+            End Try
         Else
             Dim validationErrors As String = String.Join(",",
                 ModelState.Values.Where(Function(E) E.Errors.Count > 0) _
@@ -230,7 +238,6 @@ Public Class AccountCeeController
     End Sub
 
 #Region "Private Methods"
-
 
     'definisce il dare/avere in base ai costi/ricavi/attivo/passivo
     Private Function getDebit(accountcee As AccountCee) As Boolean

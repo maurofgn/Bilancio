@@ -25,13 +25,13 @@ Namespace Models
         Public Property ID As Integer
 
         <Required>
-        <StringLength(20, MinimumLength:=1, ErrorMessage:="almeno 1 carattere e massimo 20.")>
+        <StringLength(20, MinimumLength:=1, ErrorMessage:="{0} deve essere di almeno {2} caratteri e massimo {1}.")>
         <Display(Name:="Codice")>
         <Index("codeIndex", IsUnique:=True)>
         Public Property Code As String
 
         <Required>
-        <StringLength(60, MinimumLength:=3, ErrorMessage:="almeno 3 caratteri e massimo 60.")>
+        <StringLength(60, MinimumLength:=3, ErrorMessage:="{0} deve essere di almeno {2} caratteri e massimo {1}.")>
         <Display(Name:="Descrizione")>
         Public Property Name As String
 

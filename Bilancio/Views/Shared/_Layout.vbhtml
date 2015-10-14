@@ -61,7 +61,7 @@
                             <li>@Html.ActionLink("PC CEE", "Index", "AccountCee")</li>
                             <li>@Html.ActionLink("PC interno", "Index", "AccountChart")</li>
                             <li>@Html.ActionLink("Documenti", "Index", "Document")</li>
-                            <li>@Html.ActionLink("tipo doc", "Index", "DocumentType")</li>
+                            <li>@Html.ActionLink("Tipo doc", "Index", "DocumentType")</li>
                             <li>@Html.ActionLink("Reports", "Index", "Report")</li>
                             <li>@Html.ActionLink("Avis", "Index", "Avis")</li>
                         </ul>

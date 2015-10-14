@@ -54,4 +54,28 @@ End Using
 
 @Section Scripts
     @Scripts.Render("~/bundles/jqueryval")
+
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+<script type="text/javascript">
+  $(function() {
+      $("#Code").change(checkUniqueCode);
+  });
+
+  function checkUniqueCode() {
+    $.ajax({
+      type: "POST",
+      url: "WebServiceCode.asmx/ExistCode",
+      data: { tableName: "AccountChart", code: $('#Code').val() },
+      success: function(response) {
+        $("#duplicate").empty();
+        if (response.d != "0") {
+          $("#duplicate").html(' That user name has already been taken');
+        }
+      }
+    });
+  }
+
+</script> 
+
 End Section
