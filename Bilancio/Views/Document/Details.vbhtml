@@ -2,33 +2,13 @@
 
 @Code
     ViewData("Title") = "Details"
+    Layout = "~/Views/Shared/_Layout.vbhtml"
 End Code
 
 <h2>Details</h2>
 
 <fieldset>
     <legend>Document</legend>
-
-    <div class="display-label">
-        @Html.DisplayNameFor(Function(model) model.Code)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(Function(model) model.Code)
-    </div>
-
-    <div class="display-label">
-        @Html.DisplayNameFor(Function(model) model.Name)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(Function(model) model.Name)
-    </div>
-
-    <div class="display-label">
-        @Html.DisplayNameFor(Function(model) model.Active)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(Function(model) model.Active)
-    </div>
 
     <div class="display-label">
         @Html.DisplayNameFor(Function(model) model.dateReg)
@@ -45,24 +25,24 @@ End Code
     </div>
 
     <div class="display-label">
-        @Html.DisplayNameFor(Function(model) model.DocNr)
+        @Html.DisplayNameFor(Function(model) model.docNr)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(Function(model) model.DocNr)
+        @Html.DisplayFor(Function(model) model.docNr)
     </div>
 
     <div class="display-label">
-        @Html.DisplayNameFor(Function(model) model.Note)
+        @Html.DisplayNameFor(Function(model) model.note)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(Function(model) model.Note)
+        @Html.DisplayFor(Function(model) model.note)
     </div>
 
     <div class="display-label">
-        @Html.DisplayNameFor(Function(model) model.Amount)
+        @Html.DisplayNameFor(Function(model) model.amount)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(Function(model) model.Amount)
+        @Html.DisplayFor(Function(model) model.amount)
     </div>
 </fieldset>
 <p>

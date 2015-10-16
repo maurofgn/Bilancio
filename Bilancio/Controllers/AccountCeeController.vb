@@ -230,6 +230,69 @@ Public Class AccountCeeController
         Return RedirectToAction("Index")
     End Function
 
+
+
+
+
+
+
+
+    'Function Index(ByVal sortOrder As String, currentFilter As String, searchString As String, page As Integer?) As ActionResult
+    '    ViewBag.CurrentSort = sortOrder
+    '    ViewBag.NameSortParm = If(String.IsNullOrEmpty(sortOrder), "name_desc", String.Empty)
+    '    ViewBag.CodeSortParm = If(sortOrder = "code", "code_desc", "code")
+
+    '    If Not searchString Is Nothing Then
+    '        page = 1
+    '    Else
+    '        searchString = currentFilter
+    '    End If
+
+    '    ViewBag.CurrentFilter = searchString
+
+    '    Dim accs = From s In db.AccountCees Select s
+
+    '    If Not String.IsNullOrEmpty(searchString) Then
+    '        accs = accs.Where(Function(s) s.Name.ToUpper().Contains(searchString.ToUpper()) _
+    '                                              Or s.Code.ToUpper().Contains(searchString.ToUpper()))
+    '    End If
+
+    '    Select Case sortOrder
+    '        Case "name_desc"
+    '            accs = accs.OrderByDescending(Function(s) s.Name)
+    '        Case "code"
+    '            accs = accs.OrderBy(Function(s) s.Code)
+    '        Case "code_desc"
+    '            accs = accs.OrderByDescending(Function(s) s.Code)
+    '        Case Else
+    '            accs = accs.OrderBy(Function(s) s.Name).ThenBy(Function(s) s.Code)
+    '    End Select
+
+    '    Dim pageNumber As Integer = If(page, 1)
+    '    Dim pageSize As Integer = LINES_PER_PAGE
+
+    '    Return View(accs.ToPagedList(pageNumber, pageSize))
+
+    'End Function
+
+    Function AccountPC(ByVal id As Integer, ByVal sortOrder As String, page As Integer?) As ActionResult
+
+        Dim accountcee As AccountCee = db.AccountCees.Find(id)
+        If IsNothing(accountcee) Then
+            Return HttpNotFound()
+        End If
+
+        ViewBag.CurrentSort = sortOrder
+        ViewBag.NameSortParm = If(String.IsNullOrEmpty(sortOrder), "name_desc", String.Empty)
+        ViewBag.CodeSortParm = If(sortOrder = "code", "code_desc", "code")
+
+        Dim pageNumber As Integer = If(page, 1)
+        Dim pageSize As Integer = LINES_PER_PAGE
+
+        Return View(accountcee.getAllAccountChart().ToPagedList(pageNumber, pageSize))
+    End Function
+
+
 #End Region
 
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)

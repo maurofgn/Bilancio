@@ -6,21 +6,6 @@ Namespace Models
 
         Public Property ID As Integer
 
-        <Required>
-        <StringLength(20, MinimumLength:=1, ErrorMessage:="La lunghezza massima é 20 caratteri.")>
-        <Display(Name:="Codice")>
-        Public Property Code As String
-
-        <Required>
-        <StringLength(60, MinimumLength:=3, ErrorMessage:="La lunghezza massima é 60 caratteri.")>
-        <Display(Name:="Descrizione")>
-        Public Property Name As String
-
-        '<Timestamp>
-        'Public Property RowVersion As Byte()
-
-        Public Property Active As Boolean = True
-
         <DataType(DataType.Date)>
         <DisplayFormat(DataFormatString:="{0:dd/MM/yyyy}", ApplyFormatInEditMode:=True)>
         <Display(Name:="Data Registrazione")>
@@ -31,16 +16,16 @@ Namespace Models
         <Display(Name:="Data Documento")>
         Public Property dateDoc As DateTime = DateTime.Now
 
-        <StringLength(20, ErrorMessage:="La lunghezza massima é 60 caratteri.")>
+        <StringLength(20, ErrorMessage:="{0} deve essere al massimo {1} caratteri.")>
         <Display(Name:="Nr. Doc.")>
-        Public Property DocNr As String
+        Public Property docNr As String
 
-        Public Property Note As String
+        <Display(Name:="Nota")>
+        Public Property note As String
 
         <DataType(DataType.Currency)>
         <Display(Name:="Tot. Doc.")>
-        Public Property Amount As Decimal
-
+        Public Property amount As Decimal
 
         '<DataType(DataType.Date)>
         '<DisplayFormat(DataFormatString:="{0:dd/MM/yyyy}", ApplyFormatInEditMode:=True)>
@@ -51,12 +36,14 @@ Namespace Models
         '<DisplayFormat(DataFormatString:="{0:dd/MM/yyyy}", ApplyFormatInEditMode:=True)>
         '<Display(Name:="Ultimo Aggiornamento")>
         'Public Property lastUpdate As DateTime = DateTime.Now
+
+        '<ForeignKey("DocumentType")>
+        'Public Overridable Property DocumentType_ID As Integer
+
         <Required>
-        Public Overridable Property DocumentType As DocumentType
+        Public Overridable Property documentType As DocumentType
 
-        Public Overridable Property DocumentRows As ICollection(Of DocumentRow)
-
-
+        Public Overridable Property documentRows As ICollection(Of DocumentRow)
 
     End Class
 

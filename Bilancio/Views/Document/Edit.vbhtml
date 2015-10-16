@@ -2,6 +2,7 @@
 
 @Code
     ViewData("Title") = "Edit"
+    Layout = "~/Views/Shared/_Layout.vbhtml"
 End Code
 
 <h2>Edit</h2>
@@ -14,30 +15,6 @@ End Code
         <legend>Document</legend>
 
         @Html.HiddenFor(Function(model) model.ID)
-
-        <div class="editor-label">
-            @Html.LabelFor(Function(model) model.Code)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(Function(model) model.Code)
-            @Html.ValidationMessageFor(Function(model) model.Code)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(Function(model) model.Name)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(Function(model) model.Name)
-            @Html.ValidationMessageFor(Function(model) model.Name)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(Function(model) model.Active)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(Function(model) model.Active)
-            @Html.ValidationMessageFor(Function(model) model.Active)
-        </div>
 
         <div class="editor-label">
             @Html.LabelFor(Function(model) model.dateReg)
@@ -56,27 +33,27 @@ End Code
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(Function(model) model.DocNr)
+            @Html.LabelFor(Function(model) model.docNr)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(Function(model) model.DocNr)
-            @Html.ValidationMessageFor(Function(model) model.DocNr)
+            @Html.EditorFor(Function(model) model.docNr)
+            @Html.ValidationMessageFor(Function(model) model.docNr)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(Function(model) model.Note)
+            @Html.LabelFor(Function(model) model.note)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(Function(model) model.Note)
-            @Html.ValidationMessageFor(Function(model) model.Note)
+            @Html.EditorFor(Function(model) model.note)
+            @Html.ValidationMessageFor(Function(model) model.note)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(Function(model) model.Amount)
+            @Html.LabelFor(Function(model) model.amount)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(Function(model) model.Amount)
-            @Html.ValidationMessageFor(Function(model) model.Amount)
+            @Html.EditorFor(Function(model) model.amount)
+            @Html.ValidationMessageFor(Function(model) model.amount)
         </div>
 
         <p>

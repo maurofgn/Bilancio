@@ -61,5 +61,6 @@ End Code
 <p>
 
     @Html.ActionLink("Edit", "Edit", New With {.id = Model.ID}) |
+    @Html.ActionLink("PC interno", "AccountPC", New With {.id = Model.ID}) |
     @Html.ActionLink("Back to List", "Index")
 </p>

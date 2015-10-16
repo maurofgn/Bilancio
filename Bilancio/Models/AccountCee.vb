@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.ComponentModel.DataAnnotations.Schema
+Imports Bilancio.DAL
 
 
 Namespace Models
@@ -101,6 +102,17 @@ Namespace Models
             Return Name.ToString()
         End Function
 
+        <Display(Name:="[Codice]Nome")>
+        Public ReadOnly Property CodeName() As String
+            Get
+                Return String.Format("[{0}]{1}", Code, Name)
+            End Get
+            'Set(value As String)
+
+            'End Set
+        End Property
+
+
         Function Validate(validationContext As ValidationContext) As IEnumerable(Of ValidationResult) Implements IValidatableObject.Validate
 
             If (NodeType.Equals(NodeType.ALTRO) AndAlso ParentID Is Nothing) Then
@@ -111,24 +123,51 @@ Namespace Models
             '    ' Match! "esiste un codice con lo stesso valore"
             'End If
 
-            Return Nothing
+            Return New List(Of ValidationResult) From {ValidationResult.Success}
+
+        End Function
+
+        Shared Function getNodeFromType(nodeType As Models.NodeType) As AccountCee
+
+            Dim db As New BilancioContext
+            Return db.AccountCees().Where(Function(p) p.NodeType = nodeType).First
+
+        End Function
+
+        'Lista di nodi ottenuta dall'attraversamento dell'albero a partire dal nodo corrente compreso
+        'return lista con tutti i figli a tutti i livelli del nodo corrente
+        Function getAllSons(Optional onlyLeaves As Boolean = False) As List(Of AccountCee)
+
+            Dim retValue As List(Of AccountCee) = New List(Of AccountCee)
+            Dim traverse As Action(Of AccountCee) = Sub(node As AccountCee)
+                                                        If (Not node Is Nothing) Then
+                                                            If (Not onlyLeaves Or Not node.Summary) Then
+                                                                retValue.Add(node)
+                                                            End If
+                                                            If (node.Sons.Count > 0) Then
+                                                                node.Sons.ToList.ForEach(Sub(s) traverse(s))
+                                                            End If
+                                                        End If
+                                                    End Sub
+
+            traverse(Me)
+
+            Return retValue
+
+        End Function
+
+        'return i conti del piano dei conti agganciati ad un conto cee figlio a qualsiasi livello del corrente
+        Function getAllAccountChart() As List(Of AccountChart)
+
+            Dim rewtValue As List(Of AccountChart) = New List(Of AccountChart)
+
+            getAllSons(True).ForEach(Sub(d) rewtValue.AddRange(d.AccountCharts))
+
+            Return rewtValue
 
         End Function
 
     End Class
-
-    'Partial Public Class MustBeSelectedAttribute2
-    '    Inherits ValidationAttribute
-
-
-
-    '    Public Fuction IsOldEnough() as ValidationResult
-
-    '        return ValidationResult.Success
-    '    end Function
-
-
-    'End Class
 
     Public Class MustBeSelectedAttribute
         Inherits ValidationAttribute

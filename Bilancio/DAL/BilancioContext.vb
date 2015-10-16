@@ -42,7 +42,7 @@ Namespace DAL
             If (TypeOf entityEntry.Entity Is AccountCee AndAlso (entityEntry.State = EntityState.Added Or entityEntry.State = EntityState.Modified)) Then
                 Dim record As AccountCee = CType(entityEntry.Entity, AccountCee)
                 ''check for uniqueness of AccountCee.code 
-                If (AccountCees.Where(Function(p) p.Code = record.Code).Count() > 0) Then
+                If (AccountCees.Where(Function(p) p.Code = record.Code And p.ID <> record.ID).Count() > 0) Then
 
                     result.ValidationErrors.Add(
                             New System.Data.Entity.Validation.DbValidationError("Code", "Codice già esistente"))
@@ -53,7 +53,7 @@ Namespace DAL
                 Dim record As AccountChart = CType(entityEntry.Entity, AccountChart)
 
                 ''check for uniqueness of AccountChart.code 
-                If (AccountCharts.Any(Function(p) p.Code = record.Code)) Then
+                If (AccountCharts.Any(Function(p) p.Code = record.Code And p.ID <> record.ID)) Then
                     result.ValidationErrors.Add(
                             New System.Data.Entity.Validation.DbValidationError("Code", "Codice già esistente"))
                 End If
@@ -63,7 +63,7 @@ Namespace DAL
             If (TypeOf entityEntry.Entity Is DocumentType AndAlso (entityEntry.State = EntityState.Added Or entityEntry.State = EntityState.Modified)) Then
                 Dim record As DocumentType = CType(entityEntry.Entity, DocumentType)
                 ''check for uniqueness of DocumentType.code
-                If (DocumentTypes.Where(Function(p) p.Code = record.Code).Count() > 0) Then
+                If (DocumentTypes.Where(Function(p) p.Code = record.Code And p.ID <> record.ID).Count() > 0) Then
 
                     result.ValidationErrors.Add(
                             New System.Data.Entity.Validation.DbValidationError("Code", "Codice già esistente"))

@@ -321,6 +321,8 @@ Namespace DAL
             query.ToList().ForEach(Function(s) context.AccountCharts.Add(New AccountChart() With {.Name = s.Name, .Code = s.Code, .AccountCee = s}))
             context.SaveChanges()
 
+            'mockDocument()  'load documenti di test
+
         End Sub
 
     End Class

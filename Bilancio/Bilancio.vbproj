@@ -368,22 +368,18 @@
     <Content Include="Views\AccountChart\Create.vbhtml" />
     <Content Include="Views\AccountChart\Edit.vbhtml" />
     <Content Include="Views\AccountChart\Delete.vbhtml" />
-    <Content Include="Views\Document\Index.vbhtml" />
-    <Content Include="Views\Document\Details.vbhtml" />
-    <Content Include="Views\Document\Create.vbhtml" />
-    <Content Include="Views\Document\Edit.vbhtml" />
-    <Content Include="Views\Document\Delete.vbhtml" />
-    <Content Include="Views\DocumentRow\Index.vbhtml" />
-    <Content Include="Views\DocumentRow\Details.vbhtml" />
-    <Content Include="Views\DocumentRow\Create.vbhtml" />
-    <Content Include="Views\DocumentRow\Edit.vbhtml" />
-    <Content Include="Views\DocumentRow\Delete.vbhtml" />
     <Content Include="Views\DocumentType\Index.vbhtml" />
     <Content Include="Views\DocumentType\Details.vbhtml" />
     <Content Include="Views\DocumentType\Create.vbhtml" />
     <Content Include="Views\DocumentType\Edit.vbhtml" />
     <Content Include="Views\DocumentType\Delete.vbhtml" />
     <Content Include="Views\AccountCee\Simple.vbhtml" />
+    <Content Include="Views\AccountCee\AccountPC.vbhtml" />
+    <Content Include="Views\Document\Index.vbhtml" />
+    <Content Include="Views\Document\Create.vbhtml" />
+    <Content Include="Views\Document\Edit.vbhtml" />
+    <Content Include="Views\Document\Delete.vbhtml" />
+    <Content Include="Views\Document\Details.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
@@ -449,6 +445,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Migrations\" />
     <Folder Include="ViewModels\" />
+    <Folder Include="Views\DocumentRow\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
