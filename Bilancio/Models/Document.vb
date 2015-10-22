@@ -27,6 +27,14 @@ Namespace Models
         <Display(Name:="Tot. Doc.")>
         Public Property amount As Decimal
 
+        <Required>
+        Public Overridable Property DocumentType_ID As Integer
+
+        <ForeignKey("DocumentType_ID")>
+        Public Overridable Property documentType As DocumentType
+
+        Public Overridable Property documentRows As ICollection(Of DocumentRow)
+
         '<DataType(DataType.Date)>
         '<DisplayFormat(DataFormatString:="{0:dd/MM/yyyy}", ApplyFormatInEditMode:=True)>
         '<Display(Name:="Data Creazione")>
@@ -37,13 +45,6 @@ Namespace Models
         '<Display(Name:="Ultimo Aggiornamento")>
         'Public Property lastUpdate As DateTime = DateTime.Now
 
-        '<ForeignKey("DocumentType")>
-        'Public Overridable Property DocumentType_ID As Integer
-
-        <Required>
-        Public Overridable Property documentType As DocumentType
-
-        Public Overridable Property documentRows As ICollection(Of DocumentRow)
 
     End Class
 

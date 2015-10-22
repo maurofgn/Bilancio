@@ -4,6 +4,7 @@ Imports System.ComponentModel.DataAnnotations.Schema
 Namespace Models
     Public Class DocumentRow
 
+        <Key>
         Public Property ID As Integer
 
         <Display(Name:="Nr. Riga")>
@@ -45,11 +46,10 @@ Namespace Models
         '<Display(Name:="Ultimo Aggiornamento")>
         'Public Property lastUpdate As DateTime = DateTime.Now
 
-        '<ForeignKey("Document")>
-        '<Required>
-        'Public Overridable Property Document_ID As Integer
-
+        <ForeignKey("Document")>
         <Required>
+        Public Overridable Property Document_ID As Integer
+
         Public Overridable Property Document As Document
 
         <ForeignKey("AccountChart")>

@@ -84,8 +84,8 @@ Public Class DocumentController
     '
     ' POST: /Document/Create
 
-    <HttpPost()> _
-    <ValidateAntiForgeryToken()> _
+    '<ValidateAntiForgeryToken()>   'non usato perchè i dati vengono forniti via ajax
+    <HttpPost()>
     Function Create(ByVal document As Document) As ActionResult
         If ModelState.IsValid Then
             db.Documents.Add(document)
@@ -225,6 +225,24 @@ Public Class DocumentController
             oneGroup(i, dateCurrent, 0)     'anno corrente
             oneGroup(i, datePrev, -2)       'anno precedente
         Next
+
+    End Sub
+
+    Private Sub PopulateDocTypeDropDownList(Optional ByVal selected As Document = Nothing)
+
+        Dim query = From c In db.DocumentTypes
+        Where c.Active
+        Order By c.Name, c.Code
+        'Select c.ID, c.Name, c.Code
+
+        Dim iappo As Integer
+        If (IsNothing(selected)) Then
+            iappo = 0
+        Else
+            iappo = selected.DocumentType_ID
+        End If
+
+        ViewBag.DocumentType_ID = New SelectList(query.ToList(), "ID", "Name", iappo)
 
     End Sub
 
