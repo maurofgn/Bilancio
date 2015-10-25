@@ -78,7 +78,15 @@ Public Class DocumentController
     ' GET: /Document/Create
 
     Function Create() As ActionResult
-        Return View()
+
+        Dim types = db.DocumentTypes.Select(Function(u) New SelectListItem With {.Text = u.Code + " " + u.Name, .Value = u.ID.ToString()})
+
+        Dim model = New Document With {.documentTypes = types}
+        Return View(model)
+
+        'Dim retValue As Document = New Document() With {.documentTypes = }
+        'PopulateDocTypeDropDownList(retValue)
+        'Return View(retValue)
     End Function
 
     '
@@ -92,7 +100,7 @@ Public Class DocumentController
             db.SaveChanges()
             Return RedirectToAction("Index")
         End If
-
+        PopulateDocTypeDropDownList(document)
         Return View(document)
     End Function
 
@@ -104,6 +112,7 @@ Public Class DocumentController
         If IsNothing(document) Then
             Return HttpNotFound()
         End If
+        PopulateDocTypeDropDownList()
         Return View(document)
     End Function
 
@@ -119,6 +128,7 @@ Public Class DocumentController
             Return RedirectToAction("Index")
         End If
 
+        PopulateDocTypeDropDownList()
         Return View(document)
     End Function
 
@@ -245,6 +255,36 @@ Public Class DocumentController
         ViewBag.DocumentType_ID = New SelectList(query.ToList(), "ID", "Name", iappo)
 
     End Sub
+
+    Private Function PopulateDocTypeList(Optional ByVal selected As Document = Nothing)
+
+
+
+        Dim types = db.DocumentTypes.Select(Function(u) New SelectListItem With {.Text = u.Code + " " + u.Name, .Value = u.ID.ToString()})
+
+        Dim query = From c In db.DocumentTypes
+        Where c.Active
+        Order By c.Name, c.Code
+        Select c.ID, c.Name
+
+        Dim iappo As Integer
+        If (IsNothing(selected)) Then
+            iappo = 0
+        Else
+            iappo = selected.DocumentType_ID
+        End If
+
+        Return query.ToList()
+
+        '.Items = {
+        '        New SelectListItem() With {.Value = "1", .Text = "item 1"},
+        '        New SelectListItem() With {.Value = "2", .Text = "item 2"},
+        '        New SelectListItem() With {.Value = "3", .Text = "item 3"}
+        '    }
+
+        'ViewBag.DocumentType_ID = New SelectList(query.ToList(), "ID", "Name", iappo)
+
+    End Function
 
 
 End Class
