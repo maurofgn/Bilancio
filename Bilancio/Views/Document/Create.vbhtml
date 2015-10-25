@@ -220,7 +220,8 @@ end section
              @Html.LabelFor(Function(model) model.DocumentType_ID)
          </div>
          <div class="editor-field">
-             @Html.DropDownList("DocumentType_ID", String.Empty)
+@*             @Html.DropDownList("DocumentType_ID", String.Empty)*@
+             @Html.DropDownListFor(Function(x) x.DocumentType_ID, Model.documentTypes)
              @Html.ValidationMessageFor(Function(model) model.DocumentType_ID)
          </div>
 
