@@ -27,11 +27,13 @@ Namespace Models
         <Display(Name:="Tot. Doc.")>
         Public Property amount As Decimal
 
+        <Display(Name:="Tipo Documento")>
         <Required>
-        Public Overridable Property DocumentType_ID As Integer
+         Public Overridable Property DocumentType_ID As Integer
 
         <ForeignKey("DocumentType_ID")>
         Public Overridable Property documentType As DocumentType
+        Public Property documentTypes As IEnumerable(Of SelectListItem)
 
         Public Overridable Property documentRows As ICollection(Of DocumentRow)
 
