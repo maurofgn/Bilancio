@@ -29,11 +29,10 @@ Namespace Models
 
         <Display(Name:="Tipo Documento")>
         <Required>
-         Public Overridable Property DocumentType_ID As Integer
+        Public Overridable Property DocumentType_ID As Integer
 
         <ForeignKey("DocumentType_ID")>
         Public Overridable Property documentType As DocumentType
-        Public Property documentTypes As IEnumerable(Of SelectListItem)
 
         Public Overridable Property documentRows As ICollection(Of DocumentRow)
 
@@ -47,6 +46,12 @@ Namespace Models
         '<Display(Name:="Ultimo Aggiornamento")>
         'Public Property lastUpdate As DateTime = DateTime.Now
 
+        Public ReadOnly Property totalInfo() As DocumentTot
+            Get
+                Return New DocumentTot(Me)
+            End Get
+
+        End Property
 
     End Class
 

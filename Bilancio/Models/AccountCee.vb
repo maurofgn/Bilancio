@@ -167,6 +167,35 @@ Namespace Models
 
         End Function
 
+
+        'return true se il conto è dare
+        Public Function getAncestorDebit() As Boolean
+            Return getAncestor().debit
+        End Function
+
+
+        'return il primo conto avo con docType diverso da ALTRO, quindi (attivo, passivo, costo, ricavo)
+        Function getAncestor() As AccountCee
+            Dim currentNode = Me
+
+            While currentNode.ParentID > 0 AndAlso currentNode.NodeType = Models.NodeType.ALTRO
+                currentNode = currentNode.Parent
+            End While
+
+            Return currentNode
+
+        End Function
+
+
+        'public AccountCee getAncestor() {
+        '	def currentNode = this;
+        '	while (currentNode.parent != null && !currentNode.nodeType) {
+        '               currentNode = currentNode.parent
+        '	}
+        '               Return currentNode
+        '}
+
+
     End Class
 
     Public Class MustBeSelectedAttribute

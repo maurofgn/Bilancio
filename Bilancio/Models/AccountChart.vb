@@ -21,6 +21,11 @@ Namespace Models
         '<Timestamp>
         'Public Property RowVersion As Byte()
 
+        '<Required(ErrorMessage:="Debit t/f")>
+        <Display(Name:="Conto dare")>
+        <ScaffoldColumn(False)>
+        Public Property Debit As Boolean
+
         Public Property Active As Boolean = True
 
         '<DataType(DataType.Date)>
@@ -39,7 +44,14 @@ Namespace Models
         Public Overridable Property AccountCee As AccountCee
         Public Overridable Property DocumentRows As ICollection(Of DocumentRow)
 
+        Public Overrides Function ToString() As String
+            Return Name
+        End Function
 
+
+        Public Function getAncestorDebit()
+            Return AccountCee.getAncestorDebit()
+        End Function
 
     End Class
 

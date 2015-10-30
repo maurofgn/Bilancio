@@ -4,7 +4,7 @@ Imports System.ComponentModel.DataAnnotations.Schema
 Namespace Models
     Public Class DocumentRow
 
-        <Key>
+        <Display(Name:="ID di Riga")>
         Public Property ID As Integer
 
         <Display(Name:="Nr. Riga")>
@@ -31,15 +31,15 @@ Namespace Models
         '<Display(Name:="Descrizione")>
         'Public Property Name As String
 
+        '<ScaffoldColumn(False)>
         '<Timestamp>
         'Public Property RowVersion As Byte()
 
-        'Public Property Active As Boolean = True
-
-        '<DataType(DataType.Date)>
-        '<DisplayFormat(DataFormatString:="{0:dd/MM/yyyy}", ApplyFormatInEditMode:=True)>
-        '<Display(Name:="Data Creazione")>
-        'Public Property dateCreated As DateTime = DateTime.Now
+        <ScaffoldColumn(False)>
+        <DataType(DataType.Date)>
+        <DisplayFormat(DataFormatString:="{0:dd/MM/yyyy}", ApplyFormatInEditMode:=True)>
+        <Display(Name:="Data Creazione")>
+         Public Property dateCreated As DateTime = DateTime.Now
 
         '<DataType(DataType.Date)>
         '<DisplayFormat(DataFormatString:="{0:dd/MM/yyyy}", ApplyFormatInEditMode:=True)>
