@@ -248,6 +248,7 @@
     <Compile Include="Models\Avis.vb" />
     <Compile Include="Models\Report.vb" />
     <Compile Include="Models\AccountChart.vb" />
+    <Compile Include="Utility\DocumentTot.vb" />
     <Compile Include="Utility.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
