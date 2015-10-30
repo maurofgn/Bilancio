@@ -419,7 +419,7 @@ fieldset {
         }
 
 label {
-    display: block;
+    /*display: block;*/
     font-size: 1.2em;
     font-weight: 600;
 }
@@ -435,7 +435,7 @@ input, textarea {
     font-size: 1.2em;
     margin: 5px 0 6px 0;
     padding: 5px;
-    width: 300px;
+    width: 150px;
 }
 
 textarea {
