@@ -318,7 +318,7 @@ Namespace DAL
                 Where c.Summary = False And c.NodeType = NodeType.ALTRO
                 Order By c.Code, c.Name
 
-            query.ToList().ForEach(Function(s) context.AccountCharts.Add(New AccountChart() With {.Name = s.Name, .Code = s.Code, .AccountCee = s}))
+            query.ToList().ForEach(Function(s) context.AccountCharts.Add(New AccountChart() With {.Name = s.Name, .Code = s.Code, .AccountCee = s, .Debit = s.getAncestorDebit}))
             context.SaveChanges()
 
             'mockDocument()  'load documenti di test
