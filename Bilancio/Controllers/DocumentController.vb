@@ -3,6 +3,7 @@ Imports Bilancio.Models
 Imports Bilancio.DAL
 Imports PagedList
 Imports System.Data.Entity.Validation
+Imports System.Data.Entity.Infrastructure
 
 Public Class DocumentController
     Inherits System.Web.Mvc.Controller
@@ -79,41 +80,165 @@ Public Class DocumentController
 
     Function Create() As ActionResult
 
-        Dim types = db.DocumentTypes.Select(Function(u) New SelectListItem With {.Text = u.Code + " " + u.Name, .Value = u.ID.ToString()})
+        populateListView()
 
-        Dim model = New Document With {.documentTypes = types}
-        Return View(model)
+        Return View()
 
-        'Dim retValue As Document = New Document() With {.documentTypes = }
-        'PopulateDocTypeDropDownList(retValue)
-        'Return View(retValue)
+    End Function
+
+
+    Private Function getMesErr() As String
+
+        Return String.Join(",", ModelState.Values _
+                                        .Where(Function(E) E.Errors.Count > 0) _
+                                        .SelectMany(Function(E) E.Errors) _
+                                        .[Select](Function(E) E.ErrorMessage).ToArray())
     End Function
 
     '
     ' POST: /Document/Create
-
-    '<ValidateAntiForgeryToken()>   'non usato perchè i dati vengono forniti via ajax
+    '<ValidateAntiForgeryToken()>
     <HttpPost()>
-    Function Create(ByVal document As Document) As ActionResult
-        If ModelState.IsValid Then
-            db.Documents.Add(document)
-            db.SaveChanges()
-            Return RedirectToAction("Index")
+    Function Create(document As Document) As JsonResult
+
+        'If (Request.IsAjaxRequest()) Then
+        '    Trace.WriteLine("IsAjaxRequest")
+        'End If
+
+
+        'Elimina l'errore per l'obbligotorietà dell'id di riga. Sarebbe stato meglio non generare l'errore, ma avendo la key di riga un id ... non so come si fa
+        Dim re As Regex = New Regex("documentRows\[\d+\].ID")
+        For Each k In ModelState.Keys
+            If (ModelState.Item(k).Errors.Count > 0 AndAlso re.Match(k).Success) Then
+                ModelState.Item(k).Errors.Clear()
+            End If
+        Next
+
+        If Not ModelState.IsValid Then
+            Return Json(New With {.Success = 0, .ID = document.ID, .ex = getMesErr()})
         End If
-        PopulateDocTypeDropDownList(document)
-        Return View(document)
+
+
+        ''x tutte le righe:
+        '' 1) se il dare/avere non è definito, va definito in base al conto
+        '' 2) se l'importo è negativo, va forzato positivo ed invertito il dare/avere
+        document.documentRows.ToList().ForEach(Sub(row)
+                                                   If (IsNothing(row.debit)) Then
+                                                       row.debit = db.AccountCharts.Find(row.AccountChart_ID).Debit
+                                                   End If
+
+                                                   If (row.amount.CompareTo(Decimal.Zero) < 0) Then
+                                                       row.amount = Math.Abs(row.amount)
+                                                       row.debit = Not row.debit
+                                                   End If
+                                               End Sub)
+
+        Dim totInfo = document.totalInfo()
+
+        Dim errors As Dictionary(Of String, String) = totInfo.getErrors
+        For Each key In errors.Keys
+            ModelState.AddModelError(key, errors.Item(key))
+        Next
+
+        If Not ModelState.IsValid Then
+            Return Json(New With {.Success = 0, .ID = document.ID, .ex = getMesErr()})
+        End If
+
+        Try
+            ''is document has ID then we can undertand we have existing document information so we need to perform update operation
+
+            If (document.ID > 0) Then
+                ''update
+
+                db.Documents.Attach(document)
+                db.Entry(document).State = EntityState.Modified
+
+                ''lista degli id delle righe del doc originale
+                Dim prevIdRows = (From a In db.DocumentRows Where a.Document_ID = document.ID Select a.ID).ToList()
+
+                ''lista degli id delle righe del doc dopo il salvataggio, 0 per quelle nuove
+                'Dim nextIdRows = document.documentRows.Select(Function(a) a.ID).ToList()
+                'document.note = "oldRowId[" + String.Join(",", prevIdRows.ToArray) + "] newRowId[" + String.Join(",", nextIdRows.ToArray) + "]"
+                ''
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+                document.documentRows.ToList().ForEach(Sub(rowNew)
+                                                           If (rowNew.ID <> 0 And prevIdRows.Contains(rowNew.ID)) Then
+                                                               db.Entry(rowNew).State = EntityState.Modified
+                                                               prevIdRows.Remove(rowNew.ID)
+                                                           Else
+                                                               db.Entry(rowNew).State = EntityState.Added
+                                                           End If
+
+                                                       End Sub)
+
+                db.DocumentRows.Where(Function(p) prevIdRows.Contains(p.ID)).ToList().ForEach(Function(a) db.DocumentRows.Remove(a))
+            Else
+                ''documento nuovo
+                db.Documents.Add(document)
+            End If
+
+            db.SaveChanges()
+            'If Sucess then Save/Update Successfull else there it has Exception
+            Return Json(New With {.Success = 1, .SalesID = document.ID, .ex = ""})
+
+        Catch ex As Exception
+            '' If Sucess== 0 then Unable to perform Save/Update Operation and send Exception to View as JSON
+            Return Json(New With {.Success = 0, .ex = ex.Message.ToString()})
+        End Try
+
+        Return Json(New With {.Success = 0, .ex = New Exception("unable to save").Message.ToString()})
+
     End Function
+
+
+
+
+
+    ''
+    '' POST: /Document/Create
+
+    ''<ValidateAntiForgeryToken()>   'non usato perchè i dati vengono forniti via ajax
+    '<HttpPost()>
+    'Function Create(ByVal document As Document) As ActionResult
+    '    If ModelState.IsValid Then
+    '        db.Documents.Add(document)
+    '        db.SaveChanges()
+    '        Return Json(New With {.Success = 1, .ID = document.ID, .ex = ""})
+    '        'Return RedirectToAction("Index")
+    '    Else
+    '        Dim validationErrors As String = String.Join(",",
+    '            ModelState.Values.Where(Function(E) E.Errors.Count > 0) _
+    '                .SelectMany(Function(E) E.Errors) _
+    '                .[Select](Function(E) E.ErrorMessage).ToArray())
+
+    '        Trace.WriteLine(validationErrors)   'elenco errori contenuti in validationErrors
+
+    '    End If
+    '    PopulateDocTypeDropDownList(document)
+    '    Return View(document)
+    'End Function
 
     '
     ' GET: /Document/Edit/5
 
     Function Edit(Optional ByVal id As Integer = Nothing) As ActionResult
+        ViewBag.Title = "Edit"
+        ViewBag.Operationtype = "Edit"
         Dim document As Document = db.Documents.Find(id)
         If IsNothing(document) Then
             Return HttpNotFound()
         End If
-        PopulateDocTypeDropDownList()
-        Return View(document)
+
+        populateListView()
+        ''Dim types = db.DocumentTypes.Select(Function(u) New SelectListItem With {.Text = u.Name, .Value = u.ID.ToString()})
+        ''ViewBag.documentTypes = types
+        'populateDocumentTypes()
+        ''populateAccountCharts()
+        'ViewBag.ListChart = accountCharList()
+
+        Return View("Create", document)
+
     End Function
 
     '
@@ -128,7 +253,13 @@ Public Class DocumentController
             Return RedirectToAction("Index")
         End If
 
-        PopulateDocTypeDropDownList()
+        ''Dim types = db.DocumentTypes.Select(Function(u) New SelectListItem With {.Text = u.Name, .Value = u.ID.ToString()})
+        ''ViewBag.documentTypes = types
+        'populateDocumentTypes()
+        ''populateAccountCharts()
+        'ViewBag.ListChart = accountCharList()
+        populateListView()
+
         Return View(document)
     End Function
 
@@ -169,7 +300,7 @@ Public Class DocumentController
 
         mockDocument(loopNr)  'load test documents
 
-        Return View("index", db.Documents.ToList())
+        Return RedirectToAction("Index")
 
     End Function
 
@@ -238,53 +369,92 @@ Public Class DocumentController
 
     End Sub
 
-    Private Sub PopulateDocTypeDropDownList(Optional ByVal selected As Document = Nothing)
+    'Private Sub PopulateDocTypeDropDownList(Optional ByVal selected As Document = Nothing)
 
-        Dim query = From c In db.DocumentTypes
-        Where c.Active
-        Order By c.Name, c.Code
-        'Select c.ID, c.Name, c.Code
+    '    Dim query = From c In db.DocumentTypes
+    '    Where c.Active
+    '    Order By c.Name, c.Code
+    '    'Select c.ID, c.Name, c.Code
 
-        Dim iappo As Integer
+    '    Dim iappo As Integer
+    '    If (IsNothing(selected)) Then
+    '        iappo = 0
+    '    Else
+    '        iappo = selected.DocumentType_ID
+    '    End If
+
+    '    ViewBag.DocumentType_ID = New SelectList(query.ToList(), "ID", "Name", iappo)
+
+    'End Sub
+
+    'Private Function PopulateDocTypeList(Optional ByVal selected As Document = Nothing)
+
+    '    Dim types = db.DocumentTypes.Select(Function(u) New SelectListItem With {.Text = u.Code + " " + u.Name, .Value = u.ID.ToString()})
+
+    '    Dim query = From c In db.DocumentTypes
+    '    Where c.Active
+    '    Order By c.Name, c.Code
+    '    Select c.ID, c.Name
+
+    '    Dim iappo As Integer
+    '    If (IsNothing(selected)) Then
+    '        iappo = 0
+    '    Else
+    '        iappo = selected.DocumentType_ID
+    '    End If
+
+    '    Return query.ToList()
+
+    '    '.Items = {
+    '    '        New SelectListItem() With {.Value = "1", .Text = "item 1"},
+    '    '        New SelectListItem() With {.Value = "2", .Text = "item 2"},
+    '    '        New SelectListItem() With {.Value = "3", .Text = "item 3"}
+    '    '    }
+
+    '    'ViewBag.DocumentType_ID = New SelectList(query.ToList(), "ID", "Name", iappo)
+
+    'End Function
+
+    'load ViewBag.documentTypes with SelectListItem
+    'Private Sub populateDocumentTypes()
+
+    '    Dim types = db.DocumentTypes.Select(Function(u) New SelectListItem With {.Text = u.Name, .Value = u.ID.ToString()})
+    '    ViewBag.documentTypes = types
+    'End Sub
+
+    'Non usata, ma viene lasciata solo come esempio
+    Public Sub populateAccountCharts(Optional ByVal selected As AccountChart = Nothing)
+
+        Dim query = From num In db.AccountCharts
+                 Where num.Active
+                 Order By num.Name, num.Code
+                 Select num.ID, num.Code, num.Name
+
+        Dim selectedId As Integer
         If (IsNothing(selected)) Then
-            iappo = 0
+            selectedId = 0
         Else
-            iappo = selected.DocumentType_ID
+            selectedId = selected.ID
         End If
 
-        ViewBag.DocumentType_ID = New SelectList(query.ToList(), "ID", "Name", iappo)
+
+        Dim retValue As List(Of SelectListItem) = New List(Of SelectListItem)
+
+        query.ToList().ForEach(Sub(a)
+                                   retValue.Add(New SelectListItem With {.Value = a.ID.ToString(), .Text = a.Name, .Selected = (a.ID = selectedId)})
+                               End Sub)
+
+        ViewData("Conto") = retValue
 
     End Sub
 
-    Private Function PopulateDocTypeList(Optional ByVal selected As Document = Nothing)
+    Public Sub populateListView()
+        ViewBag.documentTypes = db.DocumentTypes.Select(Function(u) New SelectListItem With {.Text = u.Name, .Value = u.ID.ToString()})
+        Dim listAccountChart = db.AccountCharts.Where(Function(a) a.Active).OrderBy(Function(a) a.Name).ToList()    'elenco di tutti i conti del pc
+        Dim avere = listAccountChart.Where(Function(a) Not a.Debit()).OrderBy(Function(a) a.ID).Select(Function(a) a.ID).ToArray() ''elenco conti (ID) in avere (gli avere sono meno dei dare) (x default se non sono avere, sono dare)
+        ViewBag.ListChart = listAccountChart
+        ViewBag.ListAvereAccountChartId = avere
 
-
-
-        Dim types = db.DocumentTypes.Select(Function(u) New SelectListItem With {.Text = u.Code + " " + u.Name, .Value = u.ID.ToString()})
-
-        Dim query = From c In db.DocumentTypes
-        Where c.Active
-        Order By c.Name, c.Code
-        Select c.ID, c.Name
-
-        Dim iappo As Integer
-        If (IsNothing(selected)) Then
-            iappo = 0
-        Else
-            iappo = selected.DocumentType_ID
-        End If
-
-        Return query.ToList()
-
-        '.Items = {
-        '        New SelectListItem() With {.Value = "1", .Text = "item 1"},
-        '        New SelectListItem() With {.Value = "2", .Text = "item 2"},
-        '        New SelectListItem() With {.Value = "3", .Text = "item 3"}
-        '    }
-
-        'ViewBag.DocumentType_ID = New SelectList(query.ToList(), "ID", "Name", iappo)
-
-    End Function
-
+    End Sub
 
 End Class

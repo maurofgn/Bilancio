@@ -80,6 +80,7 @@ Public Class AccountChartController
     Function Create(ByVal accountchart As AccountChart) As ActionResult
 
         If ModelState.IsValid Then
+            accountchart.Debit = accountchart.getAncestorDebit()
             db.AccountCharts.Add(accountchart)
             Try
                 db.SaveChanges()
