@@ -9,6 +9,7 @@ Namespace Models
         <DataType(DataType.Date)>
         <DisplayFormat(DataFormatString:="{0:dd/MM/yyyy}", ApplyFormatInEditMode:=True)>
         <Display(Name:="Data Registrazione")>
+        <Required(ErrorMessage:="valore richiesto")>
         Public Property dateReg As DateTime = DateTime.Now
 
         <DataType(DataType.Date)>
@@ -16,6 +17,7 @@ Namespace Models
         <Display(Name:="Data Documento")>
         Public Property dateDoc As DateTime = DateTime.Now
 
+        '<UIHint("IndirizzoEmail")>
         <StringLength(20, ErrorMessage:="{0} deve essere al massimo {1} caratteri.")>
         <Display(Name:="Nr. Doc.")>
         Public Property docNr As String
@@ -23,8 +25,12 @@ Namespace Models
         <Display(Name:="Nota")>
         Public Property note As String
 
+        '<DisplayFormat(DataType.Currency)>
+
+        '<UIHint("Valuta")>
         <DataType(DataType.Currency)>
         <Display(Name:="Tot. Doc.")>
+        <Required>
         Public Property amount As Decimal
 
         <Display(Name:="Tipo Documento")>

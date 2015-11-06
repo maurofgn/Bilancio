@@ -5,15 +5,15 @@ Imports Bilancio.DAL
 
 Namespace Models
 
-    Public Enum NodeType
-        ROOT
-        PATRIMONIALE
-        ECONOMICO
-        ATTIVO
-        PASSIVO
-        COSTI
-        RICAVI
-        ALTRO
+    Public Enum NodeType As Integer
+        ROOT = 0
+        PATRIMONIALE = 1
+        ECONOMICO = 2
+        ATTIVO = 3
+        PASSIVO = 4
+        COSTI = 5
+        RICAVI = 6
+        ALTRO = 7
     End Enum
 
 
@@ -22,6 +22,7 @@ Namespace Models
 
         Dim _Active As Boolean = True
         Dim _SeqNo As Integer = 0
+        Dim _creditDebit As Bilancio.CreditDebit
 
         Public Property ID As Integer
 
@@ -83,8 +84,8 @@ Namespace Models
         Public Property Total As Boolean = False
 
         '<Required(ErrorMessage:="Debit t/f")>
-        <Display(Name:="Conto dare")>
-        Public Property Debit As Boolean = True
+        <Display(Name:="Segno")>
+        Public Property Debit As DareAvere = DareAvere.Dare
 
         Public Property NodeType As NodeType = NodeType.ALTRO
 
@@ -97,6 +98,7 @@ Namespace Models
         '<Display(Name:="Figli")>
         Public Overridable Property Sons As ICollection(Of AccountCee) = New HashSet(Of AccountCee)
         Public Overridable Property AccountCharts As ICollection(Of AccountChart) = New HashSet(Of AccountChart)
+
 
         Public Overrides Function ToString() As String
             Return Name.ToString()
@@ -112,6 +114,11 @@ Namespace Models
             'End Set
         End Property
 
+        Public ReadOnly Property creditDebit As CreditDebit
+            Get
+                Return _creditDebit
+            End Get
+        End Property
 
         Function Validate(validationContext As ValidationContext) As IEnumerable(Of ValidationResult) Implements IValidatableObject.Validate
 
@@ -130,7 +137,12 @@ Namespace Models
         Shared Function getNodeFromType(nodeType As Models.NodeType) As AccountCee
 
             Dim db As New BilancioContext
-            Return db.AccountCees().Where(Function(p) p.NodeType = nodeType).First
+
+            Try
+                Return db.AccountCees().Where(Function(p) p.NodeType = nodeType).Take(1).First
+            Catch ex As Exception
+                Return Nothing
+            End Try
 
         End Function
 
@@ -139,14 +151,16 @@ Namespace Models
         Function getAllSons(Optional onlyLeaves As Boolean = False) As List(Of AccountCee)
 
             Dim retValue As List(Of AccountCee) = New List(Of AccountCee)
+
             Dim traverse As Action(Of AccountCee) = Sub(node As AccountCee)
-                                                        If (Not node Is Nothing) Then
+                                                        If (Not IsNothing(node)) Then
                                                             If (Not onlyLeaves Or Not node.Summary) Then
                                                                 retValue.Add(node)
                                                             End If
-                                                            If (node.Sons.Count > 0) Then
-                                                                node.Sons.ToList.ForEach(Sub(s) traverse(s))
-                                                            End If
+                                                            'If (node.Sons.Count > 0) Then
+                                                            '    node.Sons.ToList.ForEach(Sub(s) traverse(s))
+                                                            'End If
+                                                            node.Sons.ToList.ForEach(Sub(s) traverse(s))
                                                         End If
                                                     End Sub
 
@@ -169,8 +183,8 @@ Namespace Models
 
 
         'return true se il conto è dare
-        Public Function getAncestorDebit() As Boolean
-            Return getAncestor().debit
+        Public Function getAncestorDebit() As DareAvere
+            Return getAncestor().Debit
         End Function
 
 
@@ -186,15 +200,171 @@ Namespace Models
 
         End Function
 
+        Public Function getRootNode() As AccountCee
+            If (Not IsNothing(Parent)) Then
+                Return Parent.getRootNode() 'ricorsione
+            Else
+                Return Me
+            End If
 
-        'public AccountCee getAncestor() {
-        '	def currentNode = this;
-        '	while (currentNode.parent != null && !currentNode.nodeType) {
-        '               currentNode = currentNode.parent
+        End Function
+
+        Public Function isLeaf()
+            Return Sons.Count = 0
+        End Function
+
+        '
+        ' calcola il totale dare e avere per anno e anno-1 sulla base dei documenti, solo per le foglie.
+        '
+        Private Sub calculateCreditDebit(year As Integer)
+
+            If (Not isLeaf()) Then
+                Return
+            End If
+
+            _creditDebit = New CreditDebit(year)
+
+            'accumulo dei valori dei conti (AccountChart) appartenenti a questo conto cee
+            AccountCharts.ToList().ForEach(Sub(a) add(year, a.calculateCreditDebit(year)))
+
+            'If (Not IsNothing(Parent) AndAlso Not _creditDebit.isEmpty()) Then
+            '    'log.info "${this.toString()} ${parent.toString()}"
+            '    addOnParents(year, Parent, _creditDebit)
+            'End If
+
+            'Return _creditDebit
+
+        End Sub
+
+        Private Sub addOnParents(year As Integer, c As AccountCee)
+            addOnParents(year, c.Parent, c.creditDebit)
+        End Sub
+        'accumulo sui parent
+        Private Sub addOnParents(year As Integer, p As AccountCee, cd As CreditDebit)
+            If (Not IsNothing(p) AndAlso Not cd.isEmpty()) Then
+                p.add(year, cd)
+                addOnParents(year, p.Parent, cd)
+            End If
+        End Sub
+
+        Private Sub add(year As Integer, cd As Bilancio.CreditDebit)
+            If (IsNothing(_creditDebit)) Then
+                _creditDebit = New CreditDebit(year)
+            End If
+            _creditDebit.add(cd)
+        End Sub
+
+
+        Private Function isLastBrother() As Boolean
+            Return IsNothing(Parent) OrElse Parent.Sons.Last.ID = Me.ID
+        End Function
+
+        'return lista di conti cee (summary compresi) con il valore da documenti CreditDebit
+        Public Function getBalance(Optional year As Integer = 0) As List(Of AccountCee)
+
+            If (year <= 0) Then
+                year = Now.Year
+            End If
+
+            Dim retValue = New List(Of AccountCee)
+
+            getAllSons().ForEach(Sub(n)
+                                     If (n.isLeaf) Then
+                                         n.calculateCreditDebit(year)
+                                         addOnParents(year, n)
+                                     End If
+
+                                     retValue.Add(n)    'conto
+
+                                     If (n.isLeaf AndAlso n.isLastBrother()) Then
+                                         Dim parentsTotal As List(Of AccountCee) = n.getParentsTotal(ID)    ''righe totali
+                                         parentsTotal.ForEach(Sub(pt) retValue.Add(pt)) ''accoda i nodi total per cui il nodo corrente è l'ultimo figlio
+                                     End If
+
+                                 End Sub)
+
+            Return retValue
+
+        End Function
+
+        ' solo x foglie e ultimo nodo di un gruppo di fratelli si verifica il parent e vengono inclusi i parent di tipo total
+        ' @param maxParentId ultimo nodo ID (compreso) dei parent. Nodo oltre il quale non si deve andare
+        ' @return lista dei parent per cui va fatto il totale
+        Private Function getParentsTotal(Optional maxParentId As Integer = 0) As IList(Of AccountCee)
+
+            Dim retValue = New List(Of AccountCee)
+
+            If (isLeaf() AndAlso isLastBrother()) Then
+
+                Dim climb As Action(Of AccountCee, Integer)
+
+                climb = Sub(node As AccountCee, level As Integer)
+                            If (Not IsNothing(node)) Then
+
+                                If (node.Total) Then
+                                    'node.level = level
+                                    retValue.Add(node)
+                                End If
+
+                                If (node.isLastBrother() AndAlso maxParentId <> node.ID) Then
+                                    climb(node.Parent, (level - 1))
+                                End If
+                            End If
+                        End Sub
+
+                climb(Parent, -1)
+
+            End If
+
+            Return retValue
+
+        End Function
+
+
+        '  /**
+        '	*
+        '	* @return lista di conti cee (summary compresi) con il valore da documenti CreditDebit
+        '	*/
+        '	List<BilaRow> getBalance(int year) {
+        '		def retValue = []
+
+        '		List<AccountCee> allSons = getAllSons()
+
+        '		allSons.each { c -> 
+        '			CreditDebit cd = c.creditDebit(year)
+        '//			println("conto: ${c} saldo: ${c.creditDebit}")
+        '			BilaRow br = new BilaRow(
+        '				accountCee: c, creditDebit: cd, 
+        '				nodeType: this.nodeType, level: c.level, code:c.code, description:c.description, summary:c.summary, total:c.total,
+        '				amountYear:cd.balanceYear, amountYearPre:cd.balanceYearPrev, amountDelta: cd.balanceYear-cd.balanceYearPrev
+        '				);
+        '			retValue << br
+
+        '			List<AccountCee> parentsTotal = c.getParentsTotal(this)	//righe totali
+
+        '			parentsTotal.each{ pt ->
+        '				cd = pt.creditDebit
+        '				br = new BilaRow(
+        '					accountCee: pt, creditDebit: cd, 
+        '					nodeType: this.nodeType, level: pt.level, code:pt.code, description:pt.description, summary:pt.summary, total:pt.total
+        '					,amountYear:cd.balanceYear, amountYearPre:cd.balanceYearPrev, amountDelta: cd?.balanceYear-cd?.balanceYearPrev
+        '					);
+
+        '				retValue << br
+        '			}
+        '		}
+
+        '		retValue.each { br -> 
+        '			CreditDebit cd = br.creditDebit
+        '			if (cd) {
+        '				br.amountYear = cd.balanceYear
+        '				br.amountYearPre = cd.balanceYearPrev
+        '				br.amountDelta = cd.balanceYear-cd.balanceYearPrev
+        '			}
+        '		}
+
+        '		return retValue
         '	}
-        '               Return currentNode
-        '}
-
 
     End Class
 
