@@ -27,7 +27,8 @@ End Code
             @Html.LabelFor(Function(model) model.Name)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(Function(model) model.Name)
+            @Html.TextBoxFor(Function(model) model.Name, New With {.style = "width:400px;"})
+@*            @Html.EditorFor(Function(model) model.Name, Nothing, New With {.htmlAttributes = "width:2000px;"})*@
             @Html.ValidationMessageFor(Function(model) model.Name)
         </div>
 
@@ -39,6 +40,9 @@ End Code
             @Html.ValidationMessageFor(Function(model) model.Active)
         </div>
 
+         <div class="editor-label">
+             @Html.LabelFor(Function(model) model.AccountCeeID)
+         </div>
          <div class="editor-field">
              @Html.DropDownList("AccountCeeID", String.Empty)
              @Html.ValidationMessageFor(Function(model) model.AccountCeeID)
@@ -56,4 +60,41 @@ End Using
 
 @Section Scripts
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+    $(document).ready(
+         function () {
+             $("#Code").change(checkUniqueCode);
+         }
+    )
+
+    function checkUniqueCode() {
+
+      $.ajax({
+          url: "/Util/chkCode",
+          data: JSON.stringify({ tableName: "AccountChart", code: $('#Code').val(), id: 0 }),
+          type: 'POST',
+          contentType: 'application/json;',
+          dataType: 'json',
+          success: function (response) {
+              if (response.Success == "1") {
+                  //window.location.href = "/Document/index";
+                  //alert("codice libero " + response.ex)
+              }
+              else {
+                  alert(response.ex);
+                  $('#Code').val("");
+                  $('#Code').focus();
+              }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+                  alert(jqXHR.statusText + " (ajax error) url: " +  jqXHR.url );
+              }
+        });
+  }
+
+    </script>
+
 End Section
+
+

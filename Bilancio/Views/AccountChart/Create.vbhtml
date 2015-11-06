@@ -53,27 +53,39 @@ End Using
 </div>
 
 @Section Scripts
-    @Scripts.Render("~/bundles/jqueryval")
 
+@Scripts.Render("~/bundles/jqueryval")
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
 <script type="text/javascript">
-  $(function() {
-      $("#Code").change(checkUniqueCode);
-  });
+    $(document).ready(
+         function () {
+             $("#Code").change(checkUniqueCode);
+         }
+    )
 
-  function checkUniqueCode() {
-    $.ajax({
-      type: "POST",
-      url: "WebServiceCode.asmx/ExistCode",
-      data: { tableName: "AccountChart", code: $('#Code').val() },
-      success: function(response) {
-        $("#duplicate").empty();
-        if (response.d != "0") {
-          $("#duplicate").html(' That user name has already been taken');
-        }
-      }
-    });
+    function checkUniqueCode() {
+
+      $.ajax({
+          url: "/Util/chkCode",
+          data: JSON.stringify({ tableName: "AccountChart", code: $('#Code').val(), id: 0 }),
+          type: 'POST',
+          contentType: 'application/json;',
+          dataType: 'json',
+          success: function (response) {
+              if (response.Success == "1") {
+                  //window.location.href = "/Document/index";
+                  //alert("codice libero " + response.ex)
+              }
+              else {
+                  alert(response.ex);
+                  $('#Code').val("");
+                  $('#Code').focus();
+              }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+                  alert(jqXHR.statusText + " (ajax error) url: " +  jqXHR.url );
+              }
+        });
   }
 
 </script> 

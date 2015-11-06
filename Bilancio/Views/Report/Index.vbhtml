@@ -50,7 +50,8 @@ End Code
         <td>
             @Html.ActionLink("Edit", "Edit", New With {.id = currentItem.ID}) |
             @Html.ActionLink("Details", "Details", New With {.id = currentItem.ID}) |
-            @Html.ActionLink("Delete", "Delete", New With {.id = currentItem.ID})
+            @Html.ActionLink("Delete", "Delete", New With {.id = currentItem.ID}) |
+            @Html.ActionLink("Esegui", currentItem.ModelName, New With {.id = currentItem.ID})
         </td>
     </tr>
 Next

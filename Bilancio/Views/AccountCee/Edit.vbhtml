@@ -66,8 +66,8 @@ End Code
         <div class="editor-label">
             @Html.LabelFor(Function(model) model.Debit)
         </div>
-        <div class="editor-field">
-            @Html.EditorFor(Function(model) model.Debit)
+        <div class="editor-field"> 
+            @Html.TextBoxFor(Function(model) model.Debit, New With {.ReadOnly = "true;"})
             @Html.ValidationMessageFor(Function(model) model.Debit)
         </div>
 
@@ -94,4 +94,38 @@ End Using
 
 @Section Scripts
     @Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+    $(document).ready(
+         function () {
+             $("#Code").change(checkUniqueCode);
+         }
+    )
+
+    function checkUniqueCode() {
+
+      $.ajax({
+          url: "/Util/chkCode",
+          data: JSON.stringify({ tableName: "AccountCee", code: $('#Code').val(), id: 0 }),
+          type: 'POST',
+          contentType: 'application/json;',
+          dataType: 'json',
+          success: function (response) {
+              if (response.Success == "1") {
+                  //window.location.href = "/Document/index";
+                  alert("codice libero " + response.ex)
+              }
+              else {
+                  alert(response.ex);
+                  $('#Code').val("");
+                  $('#Code').focus();
+              }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+                  alert(jqXHR.statusText + " (ajax error) url: " +  jqXHR.url );
+              }
+        });
+  }
+
+</script>
 End Section

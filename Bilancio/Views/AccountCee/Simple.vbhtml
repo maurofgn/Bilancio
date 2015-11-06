@@ -54,7 +54,7 @@ End Code
     <div class="treeview">
         @If (Not Model Is Nothing And Model.Count > 0) Then
             @<ul>
-                @Treeview.GetTreeView(Model, Model.FirstOrDefault.ID)
+                @TreeView.GetTreeView(Model, Model.FirstOrDefault.ID)
             </ul>
         End If
     </div>

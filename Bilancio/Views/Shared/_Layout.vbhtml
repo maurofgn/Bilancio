@@ -9,6 +9,7 @@
         @Styles.Render("~/Content/css")
         @Scripts.Render("~/bundles/modernizr")
     </head>
+
     <body>
         <header>
             <div class="content-wrapper">
@@ -27,7 +28,7 @@
                         @Html.Partial("_LoginPartial")
                     </section>
 
-            @*<div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar navbar-inverse navbar-fixed-top">
                 <div class="container">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -41,15 +42,18 @@
                         <ul class="nav navbar-nav">
                             <li>@Html.ActionLink("Home", "Index", "Home")</li>
                             <li>@Html.ActionLink("About", "About", "Home")</li>
-                            <li>@Html.ActionLink("Piano dei Conti CEE", "Simple", "AccountCee")</li>
-                            <li>@Html.ActionLink("Piano dei Conti", "Index", "Account")</li>
+
+                            <li>@Html.ActionLink("PC CEE", "Index", "AccountCee")</li>
+                            <li>@Html.ActionLink("PC interno", "Index", "AccountChart")</li>
                             <li>@Html.ActionLink("Documenti", "Index", "Document")</li>
-                            <li>@Html.ActionLink("Avis", "Index", "Avis")</li>
+                            <li>@Html.ActionLink("Tipo doc", "Index", "DocumentType")</li>
                             <li>@Html.ActionLink("Reports", "Index", "Report")</li>
+                            <li>@Html.ActionLink("Avis", "Index", "Avis")</li>
+
                         </ul>
                     </div>
                 </div>
-            </div>*@
+            </div>
 
 
                     <nav>
