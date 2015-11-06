@@ -320,10 +320,10 @@ aside {
         padding: 0;
     }
 
-        aside ul li {
-            background: url("../Images/bullet.png") no-repeat 0 50%;
-            padding: 2px 0 2px 20px;
-        }
+aside ul li {
+    background: url("../Images/bullet.png") no-repeat 0 50%;
+    padding: 2px 0 2px 20px;
+}
 
 .label {
     font-weight: 700;
@@ -401,6 +401,7 @@ fieldset {
     border: none;
     border: thin;
     */
+    border: thin;
     margin: 0;
     padding: 0;
 }
@@ -438,9 +439,14 @@ input, textarea {
     width: 150px;
 }
 
+.input_short {
+    font-family: inherit;
+    width: 20px;
+}
+
 textarea {
     font-family: inherit;
-    width: 500px;
+    width: 400px;
 }
 
     input:focus, textarea:focus {
