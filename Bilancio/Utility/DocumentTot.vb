@@ -1,5 +1,6 @@
 ﻿Imports Bilancio.Models
 
+
 Public Class DocumentTot
 
     Private _amountDebit As Decimal = Decimal.Zero
@@ -20,19 +21,23 @@ Public Class DocumentTot
         If (Not IsNothing(doc)) Then
             Me.doc = doc
             For Each row In doc.documentRows
-                If (row.debit) Then
+
+                Dim amt = Math.Abs(row.amount)
+                Dim da = IIf(row.amount >= 0, row.debit, negate(row.debit))
+
+                If (da = DareAvere.Dare) Then
                     _amountDebit += row.amount
-                ElseIf (Not row.debit) Then
+                ElseIf (da = DareAvere.Avere) Then
                     _amountCredit += row.amount
                 End If
             Next
 
             _stateDoc = StateDoc.Ok _
-                Or (IIf(total().CompareTo(doc.amount), 0, StateDoc.TotRowNotEqTotHead)) _
+                Or (IIf(total().CompareTo(doc.amount) = 0, 0, StateDoc.TotRowNotEqTotHead)) _
                 Or (IIf(balanced(), 0, StateDoc.Unbalanced)) _
                 Or (IIf(doc.amount.CompareTo(Decimal.Zero) > 0, 0, StateDoc.InvalidTotal)) _
                 Or (IIf(Not IsNothing(doc.dateReg), 0, StateDoc.NotValidDataReg)) _
-                Or (IIf(IsNothing(doc.dateDoc) OrElse doc.dateReg.CompareTo(doc.dateDoc) < 0, 0, StateDoc.DataRegBeforeDoc))
+                Or (IIf(IsNothing(doc.dateDoc) OrElse doc.dateReg.CompareTo(doc.dateDoc) >= 0, 0, StateDoc.DataRegBeforeDoc))
 
         End If
 
@@ -113,8 +118,6 @@ Public Class DocumentTot
             Return retValue
         End Get
     End Property
-
-
 
 
 
