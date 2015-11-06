@@ -4,8 +4,15 @@ Imports System.Web.Optimization
 Public Class BundleConfig
     ' Per ulteriori informazioni sul Bundling, visitare il sito Web all'indirizzo http://go.microsoft.com/fwlink/?LinkId=254725
     Public Shared Sub RegisterBundles(ByVal bundles As BundleCollection)
+
+        'bundles.Add(New ScriptBundle("~/bundles/jquery").Include(
+        '           "~/Scripts/jquery-{version}.js"))
+
+        ''bundle per i javascript: includo sia bootstrap che jquery, da cui dipende bundles.Add(new ScriptBundle("~/bundles/js").Include(
         bundles.Add(New ScriptBundle("~/bundles/jquery").Include(
-                   "~/Scripts/jquery-{version}.js"))
+                   "~/Scripts/jquery-{version}.js",
+                   "~/Scripts/bootstrap.js"
+                   ))
 
         bundles.Add(New ScriptBundle("~/bundles/jqueryui").Include(
                     "~/Scripts/jquery-ui-{version}.js"))
@@ -19,7 +26,14 @@ Public Class BundleConfig
         bundles.Add(New ScriptBundle("~/bundles/modernizr").Include(
                     "~/Scripts/modernizr-*"))
 
-        bundles.Add(New StyleBundle("~/Content/css").Include("~/Content/site.css"))
+        ' bundles.Add(New StyleBundle("~/Content/css").Include("~/Content/site.css"))
+        'bundle per i css: il file "responsive" aggiunge fluidità al layout per i dispositivi mobile
+        bundles.Add(New ScriptBundle("~/Content/css").Include(
+                     "~/Content/site.css",
+                     "~/Content/bootstrap.css",
+                     "~/Content/bootstrap-responsive.css"
+                    ))
+
 
         bundles.Add(New StyleBundle("~/Content/themes/base/css").Include(
                     "~/Content/themes/base/jquery.ui.core.css",
