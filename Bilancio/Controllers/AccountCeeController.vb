@@ -184,6 +184,7 @@ Public Class AccountCeeController
 
         If ModelState.IsValid Then
             db.Entry(accountcee).State = EntityState.Modified
+
             Try
                 db.SaveChanges()
                 Return RedirectToAction("Index")
@@ -303,22 +304,22 @@ Public Class AccountCeeController
 #Region "Private Methods"
 
     'definisce il dare/avere in base ai costi/ricavi/attivo/passivo
-    Private Function getDebit(accountcee As AccountCee) As Boolean
+    Private Function getDebit(accountcee As AccountCee) As DareAvere
 
         If (accountcee Is Nothing Or accountcee.Parent Is Nothing) Then
-            Return True
+            Return DareAvere.Dare   ''default
         End If
 
         Select Case accountcee.NodeType
             Case NodeType.ATTIVO, NodeType.COSTI
-                Return True
+                Return accountcee.Debit     ''Dare
             Case NodeType.PASSIVO, NodeType.RICAVI
-                Return False
+                Return accountcee.Debit     ''Avere
             Case Else
                 Return getDebit(accountcee.Parent)
         End Select
 
-        Return True
+        Return DareAvere.Dare   ''default
     End Function
 
     Private Sub loadListParent()

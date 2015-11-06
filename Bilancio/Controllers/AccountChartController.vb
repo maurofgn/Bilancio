@@ -80,7 +80,9 @@ Public Class AccountChartController
     Function Create(ByVal accountchart As AccountChart) As ActionResult
 
         If ModelState.IsValid Then
-            accountchart.Debit = accountchart.getAncestorDebit()
+
+            accountchart.Debit = getDebit(accountchart.AccountCee, accountchart.AccountCeeID)
+
             db.AccountCharts.Add(accountchart)
             Try
                 db.SaveChanges()
@@ -114,6 +116,9 @@ Public Class AccountChartController
     <ValidateAntiForgeryToken()> _
     Function Edit(ByVal accountchart As AccountChart) As ActionResult
         If ModelState.IsValid Then
+
+            accountchart.Debit = getDebit(accountchart.AccountCee, accountchart.AccountCeeID)
+
             db.Entry(accountchart).State = EntityState.Modified
 
             Try
@@ -174,5 +179,19 @@ Public Class AccountChartController
         ViewBag.AccountCeeID = New SelectList(query.ToList(), "ID", "Name", iappo)
 
     End Sub
+
+    Private Function getDebit(Optional ByVal pcCee As AccountCee = Nothing, Optional ByVal pcCeeId As Integer = 0)
+
+        If (IsNothing(pcCee)) Then
+            If pcCeeId > 0 Then
+                Return db.AccountCees.Find(pcCeeId).getAncestorDebit()
+            Else
+                Return DareAvere.Dare   ''default
+            End If
+        Else
+            Return pcCee.getAncestorDebit()
+        End If
+
+    End Function
 
 End Class

@@ -95,19 +95,16 @@ Public Class DocumentController
                                         .[Select](Function(E) E.ErrorMessage).ToArray())
     End Function
 
-    '
-    ' POST: /Document/Create
-    '<ValidateAntiForgeryToken()>
     <HttpPost()>
     Function Create(document As Document) As JsonResult
 
-        'If (Request.IsAjaxRequest()) Then
-        '    Trace.WriteLine("IsAjaxRequest")
-        'End If
+        If (Request.IsAjaxRequest()) Then
+            Trace.WriteLine("IsAjaxRequest")
+        End If
 
+        'Elimina l'errore per l'obbligotorietà dell'id di riga, debit e rowNr, questi campi vengono generati automaticamente. Sarebbe stato meglio non generare l'errore, ma avendo la key di riga un id ... non so come si fa
+        Dim re As Regex = New Regex("documentRows\[\d+\].[ID|debit|rowNr]")
 
-        'Elimina l'errore per l'obbligotorietà dell'id di riga. Sarebbe stato meglio non generare l'errore, ma avendo la key di riga un id ... non so come si fa
-        Dim re As Regex = New Regex("documentRows\[\d+\].ID")
         For Each k In ModelState.Keys
             If (ModelState.Item(k).Errors.Count > 0 AndAlso re.Match(k).Success) Then
                 ModelState.Item(k).Errors.Clear()
@@ -118,21 +115,28 @@ Public Class DocumentController
             Return Json(New With {.Success = 0, .ID = document.ID, .ex = getMesErr()})
         End If
 
-
+        Dim maxRow As Integer = 0
         ''x tutte le righe:
         '' 1) se il dare/avere non è definito, va definito in base al conto
         '' 2) se l'importo è negativo, va forzato positivo ed invertito il dare/avere
         document.documentRows.ToList().ForEach(Sub(row)
-                                                   If (IsNothing(row.debit)) Then
+                                                   If (maxRow < row.rowNr And row.rowNr > 0) Then
+                                                       maxRow = row.rowNr
+                                                   End If
+                                                   If (IsNothing(row.debit) Or row.debit = 0) Then
                                                        row.debit = db.AccountCharts.Find(row.AccountChart_ID).Debit
                                                    End If
 
                                                    If (row.amount.CompareTo(Decimal.Zero) < 0) Then
                                                        row.amount = Math.Abs(row.amount)
-                                                       row.debit = Not row.debit
+                                                       row.debit = negate(row.debit)
                                                    End If
                                                End Sub)
 
+        document.documentRows.Where(Function(a) a.rowNr <= 0).ToList().ForEach(Sub(row)
+                                                                                   maxRow += 1
+                                                                                   row.rowNr = maxRow
+                                                                               End Sub)
         Dim totInfo = document.totalInfo()
 
         Dim errors As Dictionary(Of String, String) = totInfo.getErrors
@@ -149,9 +153,9 @@ Public Class DocumentController
 
             If (document.ID > 0) Then
                 ''update
-
-                db.Documents.Attach(document)
-                db.Entry(document).State = EntityState.Modified
+                'Dim previousDoc = db.Documents.Find(document.ID)
+                '                db.Documents.Attach(document)
+                'db.Entry(document).State = EntityState.Modified
 
                 ''lista degli id delle righe del doc originale
                 Dim prevIdRows = (From a In db.DocumentRows Where a.Document_ID = document.ID Select a.ID).ToList()
@@ -173,6 +177,9 @@ Public Class DocumentController
                                                        End Sub)
 
                 db.DocumentRows.Where(Function(p) prevIdRows.Contains(p.ID)).ToList().ForEach(Function(a) db.DocumentRows.Remove(a))
+
+                db.Entry(document).State = EntityState.Modified
+
             Else
                 ''documento nuovo
                 db.Documents.Add(document)
@@ -191,34 +198,6 @@ Public Class DocumentController
 
     End Function
 
-
-
-
-
-    ''
-    '' POST: /Document/Create
-
-    ''<ValidateAntiForgeryToken()>   'non usato perchè i dati vengono forniti via ajax
-    '<HttpPost()>
-    'Function Create(ByVal document As Document) As ActionResult
-    '    If ModelState.IsValid Then
-    '        db.Documents.Add(document)
-    '        db.SaveChanges()
-    '        Return Json(New With {.Success = 1, .ID = document.ID, .ex = ""})
-    '        'Return RedirectToAction("Index")
-    '    Else
-    '        Dim validationErrors As String = String.Join(",",
-    '            ModelState.Values.Where(Function(E) E.Errors.Count > 0) _
-    '                .SelectMany(Function(E) E.Errors) _
-    '                .[Select](Function(E) E.ErrorMessage).ToArray())
-
-    '        Trace.WriteLine(validationErrors)   'elenco errori contenuti in validationErrors
-
-    '    End If
-    '    PopulateDocTypeDropDownList(document)
-    '    Return View(document)
-    'End Function
-
     '
     ' GET: /Document/Edit/5
 
@@ -231,36 +210,9 @@ Public Class DocumentController
         End If
 
         populateListView()
-        ''Dim types = db.DocumentTypes.Select(Function(u) New SelectListItem With {.Text = u.Name, .Value = u.ID.ToString()})
-        ''ViewBag.documentTypes = types
-        'populateDocumentTypes()
-        ''populateAccountCharts()
-        'ViewBag.ListChart = accountCharList()
 
         Return View("Create", document)
 
-    End Function
-
-    '
-    ' POST: /Document/Edit/5
-
-    <HttpPost()> _
-    <ValidateAntiForgeryToken()> _
-    Function Edit(ByVal document As Document) As ActionResult
-        If ModelState.IsValid Then
-            db.Entry(document).State = EntityState.Modified
-            db.SaveChanges()
-            Return RedirectToAction("Index")
-        End If
-
-        ''Dim types = db.DocumentTypes.Select(Function(u) New SelectListItem With {.Text = u.Name, .Value = u.ID.ToString()})
-        ''ViewBag.documentTypes = types
-        'populateDocumentTypes()
-        ''populateAccountCharts()
-        'ViewBag.ListChart = accountCharList()
-        populateListView()
-
-        Return View(document)
     End Function
 
     '
@@ -338,16 +290,16 @@ Public Class DocumentController
                                                 Dim doc As Document = New Document With {.documentType = docType, .dateReg = dateReg, .dateDoc = dateReg, .docNr = docNo, .amount = IIf(even, 30 + delta, 50 + delta), .note = "Nota su doc " & docNo}
 
                                                 If (even) Then
-                                                    db.DocumentRows.Add(New DocumentRow With {.Document = doc, .rowNr = 1, .debit = even, .amount = 30 + delta, .AccountChart_ID = attivo(attivoIndex Mod attivo.Length).ID, .note = "attivo dare"})
-                                                    db.DocumentRows.Add(New DocumentRow With {.Document = doc, .rowNr = 2, .debit = Not even, .amount = 20 + delta, .AccountChart_ID = ricavi(ricaviIndex Mod ricavi.Length).ID, .note = "ricavo avere"})
-                                                    db.DocumentRows.Add(New DocumentRow With {.Document = doc, .rowNr = 3, .debit = Not even, .amount = 10, .AccountChart_ID = passivo(passivoIndex Mod passivo.Length).ID, .note = "passivo avere"})
+                                                    db.DocumentRows.Add(New DocumentRow With {.Document = doc, .rowNr = 1, .debit = DareAvere.Dare, .amount = 30 + delta, .AccountChart_ID = attivo(attivoIndex Mod attivo.Length).ID, .note = "attivo dare"})
+                                                    db.DocumentRows.Add(New DocumentRow With {.Document = doc, .rowNr = 2, .debit = DareAvere.Avere, .amount = 20 + delta, .AccountChart_ID = ricavi(ricaviIndex Mod ricavi.Length).ID, .note = "ricavo avere"})
+                                                    db.DocumentRows.Add(New DocumentRow With {.Document = doc, .rowNr = 3, .debit = DareAvere.Avere, .amount = 10, .AccountChart_ID = passivo(passivoIndex Mod passivo.Length).ID, .note = "passivo avere"})
                                                     ricaviIndex += 1
                                                     attivoIndex += 1
                                                     passivoIndex += 1
                                                 Else
-                                                    db.DocumentRows.Add(New DocumentRow With {.Document = doc, .rowNr = 1, .debit = Not even, .amount = 50 + delta, .AccountChart_ID = passivo(passivoIndex Mod attivo.Length).ID, .note = "passivo avere"})
-                                                    db.DocumentRows.Add(New DocumentRow With {.Document = doc, .rowNr = 2, .debit = even, .amount = 45 + delta, .AccountChart_ID = costi(costiIndex Mod ricavi.Length).ID, .note = "costo dare"})
-                                                    db.DocumentRows.Add(New DocumentRow With {.Document = doc, .rowNr = 3, .debit = even, .amount = 5, .AccountChart_ID = attivo(attivoIndex Mod passivo.Length).ID, .note = "attivo dare"})
+                                                    db.DocumentRows.Add(New DocumentRow With {.Document = doc, .rowNr = 1, .debit = DareAvere.Avere, .amount = 50 + delta, .AccountChart_ID = passivo(passivoIndex Mod attivo.Length).ID, .note = "passivo avere"})
+                                                    db.DocumentRows.Add(New DocumentRow With {.Document = doc, .rowNr = 2, .debit = DareAvere.Dare, .amount = 45 + delta, .AccountChart_ID = costi(costiIndex Mod ricavi.Length).ID, .note = "costo dare"})
+                                                    db.DocumentRows.Add(New DocumentRow With {.Document = doc, .rowNr = 3, .debit = DareAvere.Dare, .amount = 5, .AccountChart_ID = attivo(attivoIndex Mod passivo.Length).ID, .note = "attivo dare"})
                                                     costiIndex += 1
                                                     attivoIndex += 1
                                                     passivoIndex += 1
@@ -437,7 +389,6 @@ Public Class DocumentController
             selectedId = selected.ID
         End If
 
-
         Dim retValue As List(Of SelectListItem) = New List(Of SelectListItem)
 
         query.ToList().ForEach(Sub(a)
@@ -451,9 +402,8 @@ Public Class DocumentController
     Public Sub populateListView()
         ViewBag.documentTypes = db.DocumentTypes.Select(Function(u) New SelectListItem With {.Text = u.Name, .Value = u.ID.ToString()})
         Dim listAccountChart = db.AccountCharts.Where(Function(a) a.Active).OrderBy(Function(a) a.Name).ToList()    'elenco di tutti i conti del pc
-        Dim avere = listAccountChart.Where(Function(a) Not a.Debit()).OrderBy(Function(a) a.ID).Select(Function(a) a.ID).ToArray() ''elenco conti (ID) in avere (gli avere sono meno dei dare) (x default se non sono avere, sono dare)
         ViewBag.ListChart = listAccountChart
-        ViewBag.ListAvereAccountChartId = avere
+        ViewBag.ListAvereAccountChartId = listAccountChart.Where(Function(a) DareAvere.Avere.Equals(a.Debit())).OrderBy(Function(a) a.ID).Select(Function(a) a.ID).ToArray() ''elenco conti (ID) in avere (gli avere sono meno dei dare) (x default se non sono avere, sono dare)
 
     End Sub
 
