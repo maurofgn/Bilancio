@@ -2,6 +2,15 @@
 Imports System.Data.Entity
 Imports System.Data.Entity.ModelConfiguration.Conventions
 Imports System.Data.Entity.Validation
+Imports System.Data.Entity.Infrastructure
+Imports System.Data.Entity.Core.Objects
+Imports System.IO
+Imports System.Data.Entity.Core.Objects.DataClasses
+
+'Imports System
+'Imports System.Xml
+'Imports System.Xml.Linq
+'Imports System.Runtime.Serialization
 
 Namespace DAL
     Public Class BilancioContext
@@ -78,6 +87,126 @@ Namespace DAL
 
         End Function
 
+        '
+        'per le entità modificate/create assegna la data ultimo aggiornamento, se l'entità è da creare assegna anche la data di creazione
+        '
+        '
+        Public Overrides Function SaveChanges() As Integer
+
+            'AutoDetectChangesEnabled()
+
+            Dim context As Core.Objects.ObjectContext = CType(Me, IObjectContextAdapter).ObjectContext
+
+            ''Find all Entities that are Added/Modified that inherit from my EntityBase
+            Dim objectStateEntries As IEnumerable(Of ObjectStateEntry) =
+                From e In context.ObjectStateManager.GetObjectStateEntries(EntityState.Added Or EntityState.Modified)
+                Where
+                    e.IsRelationship = False And
+                    Not IsNothing(e.Entity) And
+                    GetType(EntityBase).IsAssignableFrom(e.Entity.GetType())
+                Select e
+
+            Dim currentTime = DateTime.Now
+
+            For Each entry As ObjectStateEntry In objectStateEntries
+
+                Dim entityBase As EntityBase = entry.Entity
+
+                If (entry.State = EntityState.Added) Then
+                    entityBase.dateCreated = currentTime
+                    entityBase.lastUpdate = currentTime
+                ElseIf (entry.State = EntityState.Modified) Then
+
+                    ' ''capire se esiste almeno un campo modificato
+                    ' ''Ho fatto diverse prove, ma non sono riuscito a capire quali campi sono stati effettivamente modificati
+                    ' ''Sarebbe opportuno capire se c'è almeno una modifica in modo da aggiornare la data modifica solo in questo caso
+
+                    'Dim aa As IEnumerable(Of String) = entry.GetModifiedProperties.Where(Function(modifiedPro) entry.IsPropertyChanged(modifiedPro))
+                    'Dim almostOneUpdatedField = entry.GetModifiedProperties.Where(Function(modifiedPro) entry.IsPropertyChanged(modifiedPro)).Count > 0
+                    'For Each modifiedPro In entry.GetModifiedProperties
+                    '    Trace.WriteLine(String.Format("nome campo: {0} valore: {1}", modifiedPro, entry.IsPropertyChanged(modifiedPro)))
+                    '    '_db.ObjectStateManager.GetObjectStateEntry(employee).SetModifiedProperty(modifiedPro)
+                    'Next
+                    'If (almostOneUpdatedField) Then
+                    '    entityBase.lastUpdate = currentTime
+                    'End If
+
+                    entityBase.lastUpdate = currentTime
+                End If
+            Next
+
+            Return MyBase.SaveChanges()
+
+        End Function
+
+
+        Private Function GetEntryValueInString(entry As ObjectStateEntry, isOrginal As Boolean) As String
+
+            If TypeOf entry.Entity Is EntityObject Then
+
+            End If
+            '{
+            '    object target = CloneEntity((EntityObject)entry.Entity);
+            '    foreach (string propName in entry.GetModifiedProperties())
+            '    {
+            '        object setterValue = null;
+            '        If (isOrginal) Then
+            '        {
+            '            //Get orginal value 
+            '            setterValue = entry.OriginalValues[propName];
+            '        }
+            '        Else
+            '        {
+            '            //Get orginal value 
+            '            setterValue = entry.CurrentValues[propName];
+            '        }
+            '        //Find property to update 
+            '        PropertyInfo propInfo = target.GetType().GetProperty(propName);
+            '        //update property with orgibal value 
+            '        if (setterValue == DBNull.Value)
+            '        {//
+            '            setterValue = null;
+            '        }
+            '        propInfo.SetValue(target, setterValue, null);
+            '    }//end foreach
+
+            '    XmlSerializer formatter = new XmlSerializer(target.GetType());
+            '    XDocument document = new XDocument();
+
+            '    using (XmlWriter xmlWriter = document.CreateWriter())
+            '    {
+            '        formatter.Serialize(xmlWriter, target);
+            '    }
+            '    return document.Root.ToString();
+            '}
+
+            Return Nothing
+
+        End Function
+
+        'Public Function CloneEntity(obj As EntityObject) As EntityObject
+
+        '    '            Dim dcSer = New System.Runtime.Serialization.DataContractSerializer(obj.GetType())
+
+        '    Dim dcSer As System.Runtime.Serialization.DataContractSerializer = New System.Runtime.Serialization.DataContractSerializer(GetType(obj))
+
+        '    Dim memoryStream = New MemoryStream()
+
+        '    dcSer.WriteObject(memoryStream, obj)
+        '    memoryStream.Position = 0
+
+        '    Dim newObject As EntityObject = CType(dcSer.ReadObject(memoryStream), EntityObject)  ' (EntityObject)dcSer.ReadObject(memoryStream);
+        '    Return newObject
+
+        'End Function
+
     End Class
+
+    Public Interface EntityBase
+
+        Property dateCreated As DateTime
+        Property lastUpdate As DateTime
+
+    End Interface
 
 End Namespace
