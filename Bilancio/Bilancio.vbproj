@@ -51,6 +51,8 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
@@ -199,6 +201,8 @@
     <Import Include="System.Collections.Generic" />
     <Import Include="System.Data" />
     <Import Include="System.Linq" />
+    <Import Include="System.Runtime.Serialization" />
+    <Import Include="System.Web.UI.HtmlControls" />
     <Import Include="System.Xml.Linq" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.Collections.Specialized" />
@@ -217,7 +221,6 @@
     <Import Include="System.Web.UI" />
     <Import Include="System.Web.UI.WebControls" />
     <Import Include="System.Web.UI.WebControls.WebParts" />
-    <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AuthConfig.vb" />
@@ -225,6 +228,19 @@
     <Compile Include="App_Start\FilterConfig.vb" />
     <Compile Include="App_Start\RouteConfig.vb" />
     <Compile Include="App_Start\WebApiConfig.vb" />
+    <Compile Include="BilancioDataSet.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BilancioDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="BilancioDataSet.vb">
+      <DependentUpon>BilancioDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="BilancioDataSet1.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BilancioDataSet1.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\AccountCeeController.vb" />
     <Compile Include="Controllers\AccountChartController.vb" />
     <Compile Include="Controllers\AvisController.vb" />
@@ -270,7 +286,15 @@
     <Compile Include="Controllers\AccountController.vb" />
     <Compile Include="Controllers\HomeController.vb" />
     <Compile Include="Models\AccountModels.vb" />
+    <Compile Include="ViewModels\CreditDebitAccount.vb" />
     <Compile Include="ViewModels\CreditDebit.vb" />
+    <Compile Include="Reports\WebForm1.aspx.designer.vb">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\WebForm1.aspx.vb">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="WebServiceChkCode.asmx.vb">
       <DependentUpon>WebServiceChkCode.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -283,6 +307,7 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Balance.rdlc" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-responsive.css" />
@@ -322,7 +347,30 @@
     <Content Include="Scripts\DataTables-1.10.9\js\jquery.dataTables.min.js" />
     <Content Include="Scripts\json2.js" />
     <Content Include="Scripts\json2.min.js" />
+    <Content Include="Reports\WebForm1.aspx" />
     <Content Include="WebServiceChkCode.asmx" />
+    <Content Include="BilancioDataSet.xsc">
+      <DependentUpon>BilancioDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="BilancioDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>BilancioDataSet.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="BilancioDataSet.xss">
+      <DependentUpon>BilancioDataSet.xsd</DependentUpon>
+    </Content>
+    <Content Include="BilancioDataSet1.xsc">
+      <DependentUpon>BilancioDataSet1.xsd</DependentUpon>
+    </Content>
+    <None Include="BilancioDataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>BilancioDataSet1.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="BilancioDataSet1.xss">
+      <DependentUpon>BilancioDataSet1.xsd</DependentUpon>
+    </Content>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -393,11 +441,6 @@
     <Content Include="Views\Avis\Create.vbhtml" />
     <Content Include="Views\Avis\Edit.vbhtml" />
     <Content Include="Views\Avis\Delete.vbhtml" />
-    <Content Include="Views\Report\Index.vbhtml" />
-    <Content Include="Views\Report\Details.vbhtml" />
-    <Content Include="Views\Report\Create.vbhtml" />
-    <Content Include="Views\Report\Edit.vbhtml" />
-    <Content Include="Views\Report\Delete.vbhtml" />
     <Content Include="Views\AccountCee\Index.vbhtml" />
     <Content Include="Views\AccountCee\Details.vbhtml" />
     <Content Include="Views\AccountCee\Create.vbhtml" />
@@ -422,6 +465,12 @@
     <Content Include="App_Code\Treeview.vbhtml" />
     <Content Include="Views\Shared\EditorTemplates\Valuta.vbhtml" />
     <Content Include="Views\Shared\EditorTemplates\IndirizzoEmail.vbhtml" />
+    <Content Include="Views\AccountCee\BalanceView.vbhtml" />
+    <Content Include="Views\Report\Index.vbhtml" />
+    <Content Include="Views\Report\Create.vbhtml" />
+    <Content Include="Views\Report\Edit.vbhtml" />
+    <Content Include="Views\Report\Delete.vbhtml" />
+    <Content Include="Views\AccountCee\Balance.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
