@@ -232,9 +232,32 @@ Public Class AccountCeeController
     End Function
 
 
+    Function Balance() As ActionResult
+
+        PopulateNodeTypeDropDownList()
+        PopulateYearDropDownList()
+
+        Return View()
+
+    End Function
 
 
+    <HttpPost()> _
+    <ValidateAntiForgeryToken()> _
+    Function Balance(Optional ByVal nodeType As NodeType = NodeType.ROOT, Optional ByVal year As Integer = 0) As ActionResult
 
+        year = IIf(year > 0, year, Now.Year)
+
+        ViewBag.year = year
+        ViewBag.yearPrev = year - 1
+        ViewBag.type = nodeType.ToString
+
+        Return PartialView("BalanceView", AccountCee.getNodeFromType(nodeType).getBalance(year))
+
+        'Return View("viewBalance", String.Empty, AccountCee.getNodeFromType(nodeType).getBalance(IIf(year > 0, year, Now.Year)))
+
+        'Return RedirectToAction("Index", "Report")  ''elenco dei reports
+    End Function
 
 
 
@@ -358,7 +381,6 @@ Public Class AccountCeeController
 
         ViewBag.ParentID = New SelectList(query.ToList(), "ID", "Name", iappo)
 
-
     End Sub
 
     'crea una lista di SelectListItem 
@@ -380,6 +402,30 @@ Public Class AccountCeeController
              {.Text = c.Name, .Value = c.ID, .Selected = (c.ID = selID)}
 
         ViewBag.ParentID = query.ToList()
+
+    End Sub
+
+    'crea una lista di SelectListItem con i tipi nodi per il bilancio
+    Private Sub PopulateNodeTypeDropDownList()
+
+        Dim values = [Enum].GetValues(GetType(NodeType)) _
+            .Cast(Of NodeType) _
+            .Where(Function(a) a <> NodeType.ALTRO) _
+            .Select(Function(v) New SelectListItem With {
+                        .Text = v.ToString(),
+                        .Value = (CType(v, Integer)).ToString()
+                    })
+
+        ViewBag.NodeType = values
+
+    End Sub
+
+    Private Sub PopulateYearDropDownList()
+
+        Dim values As IEnumerable(Of SelectListItem) = (From d In db.Documents Select d.dateReg.Year).Distinct().OrderByDescending(Function(y) y) _
+            .Select(Function(v) New SelectListItem With {.Text = v.ToString(), .Value = v.ToString()})
+
+        ViewBag.yearDoc = values
 
     End Sub
 

@@ -1,6 +1,7 @@
 ﻿Imports System.Data.Entity
 Imports Bilancio.Models
 Imports Bilancio.DAL
+Imports Bilancio.ViewModels
 
 Public Class ReportController
     Inherits System.Web.Mvc.Controller
@@ -111,22 +112,45 @@ Public Class ReportController
             Return RedirectToAction("Index")    'tipo non valido
         End If
 
-        Dim rootAccount = AccountCee.getNodeFromType(rootNodeType)
+        Dim bal As List(Of CreditDebitAccount) = AccountCee.getNodeFromType(rootNodeType).getBalance(IIf(year > 0, year, Now.Year))
 
-        Dim bal As List(Of AccountCee) = rootAccount.getBalance(IIf(year > 0, year, Now.Year))
-
-        bal.ForEach(Sub(a)
-                        Dim cd As String = ""
-                        If (Not IsNothing(a.creditDebit)) Then
-                            cd = a.creditDebit.toString()
-                        End If
-                        Trace.WriteLine(a.ToString() & cd)
-                    End Sub)
+        'bal.ForEach(Sub(a)
+        '                Dim cd As String = ""
+        '                If (Not IsNothing(a.creditDebit)) Then
+        '                    cd = a.creditDebit.toString()
+        '                End If
+        '                Trace.WriteLine(a.ToString() & cd)
+        '            End Sub)
 
 
-        Return RedirectToAction("Index")
+        Return View("viewBalance", bal)
+
+        'Return RedirectToAction("Index")
 
     End Function
+
+
+    Private Sub viewReportBalance(bal As List(Of AccountCee))
+        ' ReportViewer1.Visible = true;
+
+        ' '//Invoke Stored procedure With Input parameter to it.
+        ' '//DataSet dsReport = objSP.GetTable(storedProcedure,txtParameter.Text));
+        ' '//Hardcoded Values.
+        ' 'IList >Customer< customerList = new List>Customer<();
+        ' 'customerList.Add(new Customer(1,"Santosh Poojari"));
+        ' 'customerList.Add(new Customer(2, "Santosh Poojari1"));
+        ' 'customerList.Add(new Customer(3, "Santosh Poojari2"));
+
+        'ReportParameter[] param = new ReportParameter[1];
+        'param[0] = new ReportParameter("Report_Parameter_0",txtParameter.Text);
+        'ReportViewer1.LocalReport.SetParameters(param);
+
+        ' ReportDataSource rds = New ReportDataSource
+        '    ("DataSet1_Customers_DataTable1", customerList);
+        'ReportViewer1.LocalReport.DataSources.Clear();
+        'ReportViewer1.LocalReport.DataSources.Add(rds);
+        'ReportViewer1.LocalReport.Refresh();
+    End Sub
 
 
     '        /* serves the report document for download*/
