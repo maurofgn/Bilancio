@@ -53,6 +53,22 @@ End Code
             @Html.ValidationMessageFor(Function(model) model.OutFileName)
         </div>
 
+        <div class="editor-label">
+            @Html.LabelFor(Function(model) model.ActioneName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(Function(model) model.ActioneName)
+            @Html.ValidationMessageFor(Function(model) model.ActioneName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(Function(model) model.ControllerName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(Function(model) model.ControllerName)
+            @Html.ValidationMessageFor(Function(model) model.ControllerName)
+        </div>
+
         <p>
             <input type="submit" value="Create" />
         </p>

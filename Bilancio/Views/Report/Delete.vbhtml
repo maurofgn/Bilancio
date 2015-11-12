@@ -44,6 +44,34 @@ End Code
     <div class="display-field">
         @Html.DisplayFor(Function(model) model.OutFileName)
     </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(Function(model) model.ActioneName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.ActioneName)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(Function(model) model.ControllerName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.ControllerName)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(Function(model) model.dateCreated)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.dateCreated)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(Function(model) model.lastUpdate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.lastUpdate)
+    </div>
 </fieldset>
 @Using Html.BeginForm()
     @Html.AntiForgeryToken()

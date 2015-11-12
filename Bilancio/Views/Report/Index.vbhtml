@@ -26,6 +26,18 @@ End Code
         <th>
             @Html.DisplayNameFor(Function(model) model.OutFileName)
         </th>
+        <th>
+            @Html.DisplayNameFor(Function(model) model.ActioneName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(Function(model) model.ControllerName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(Function(model) model.dateCreated)
+        </th>
+        <th>
+            @Html.DisplayNameFor(Function(model) model.lastUpdate)
+        </th>
         <th></th>
     </tr>
 
@@ -48,10 +60,22 @@ End Code
             @Html.DisplayFor(Function(modelItem) currentItem.OutFileName)
         </td>
         <td>
+            @Html.DisplayFor(Function(modelItem) currentItem.ActioneName)
+        </td>
+        <td>
+            @Html.DisplayFor(Function(modelItem) currentItem.ControllerName)
+        </td>
+        <td>
+            @Html.DisplayFor(Function(modelItem) currentItem.dateCreated)
+        </td>
+        <td>
+            @Html.DisplayFor(Function(modelItem) currentItem.lastUpdate)
+        </td>
+        <td>
             @Html.ActionLink("Edit", "Edit", New With {.id = currentItem.ID}) |
             @Html.ActionLink("Details", "Details", New With {.id = currentItem.ID}) |
             @Html.ActionLink("Delete", "Delete", New With {.id = currentItem.ID}) |
-            @Html.ActionLink("Esegui", currentItem.ModelName, New With {.id = currentItem.ID})
+            @Html.ActionLink("Esegui", currentItem.ActioneName, currentItem.ControllerName)
         </td>
     </tr>
 Next

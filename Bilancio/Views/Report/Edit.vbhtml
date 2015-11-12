@@ -55,6 +55,38 @@ End Code
             @Html.ValidationMessageFor(Function(model) model.OutFileName)
         </div>
 
+        <div class="editor-label">
+            @Html.LabelFor(Function(model) model.ActioneName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(Function(model) model.ActioneName)
+            @Html.ValidationMessageFor(Function(model) model.ActioneName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(Function(model) model.ControllerName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(Function(model) model.ControllerName)
+            @Html.ValidationMessageFor(Function(model) model.ControllerName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(Function(model) model.dateCreated)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(Function(model) model.dateCreated, New With {.readonly = "readonly"})
+            @Html.ValidationMessageFor(Function(model) model.dateCreated)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(Function(model) model.lastUpdate)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(Function(model) model.lastUpdate, New With {.readonly = "true"})
+            @Html.ValidationMessageFor(Function(model) model.lastUpdate)
+        </div>
+
         <p>
             <input type="submit" value="Save" />
         </p>
