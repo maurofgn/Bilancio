@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.ComponentModel.DataAnnotations.Schema
 Imports Bilancio.DAL
+Imports Bilancio.ViewModels
 
 
 Namespace Models
@@ -109,9 +110,7 @@ Namespace Models
             Get
                 Return String.Format("[{0}]{1}", Code, Name)
             End Get
-            'Set(value As String)
 
-            'End Set
         End Property
 
         Public ReadOnly Property creditDebit As CreditDebit
@@ -222,7 +221,7 @@ Namespace Models
                 Return
             End If
 
-            _creditDebit = New CreditDebit(year)
+            _creditDebit = New CreditDebit(year, Debit)
 
             'accumulo dei valori dei conti (AccountChart) appartenenti a questo conto cee
             AccountCharts.ToList().ForEach(Sub(a) add(year, a.calculateCreditDebit(year)))
@@ -236,9 +235,9 @@ Namespace Models
 
         End Sub
 
-        Private Sub addOnParents(year As Integer, c As AccountCee)
-            addOnParents(year, c.Parent, c.creditDebit)
-        End Sub
+        'Private Sub addOnParents(year As Integer, c As AccountCee)
+        '    addOnParents(year, c.Parent, c.creditDebit)
+        'End Sub
         'accumulo sui parent
         Private Sub addOnParents(year As Integer, p As AccountCee, cd As CreditDebit)
             If (Not IsNothing(p) AndAlso Not cd.isEmpty()) Then
@@ -249,7 +248,7 @@ Namespace Models
 
         Private Sub add(year As Integer, cd As Bilancio.CreditDebit)
             If (IsNothing(_creditDebit)) Then
-                _creditDebit = New CreditDebit(year)
+                _creditDebit = New CreditDebit(year, Debit)
             End If
             _creditDebit.add(cd)
         End Sub
@@ -259,29 +258,36 @@ Namespace Models
             Return IsNothing(Parent) OrElse Parent.Sons.Last.ID = Me.ID
         End Function
 
-        'return lista di conti cee (summary compresi) con il valore da documenti CreditDebit
-        Public Function getBalance(Optional year As Integer = 0) As List(Of AccountCee)
+        Public Function getBalance(Optional year As Integer = 0) As List(Of CreditDebitAccount)
 
-            If (year <= 0) Then
-                year = Now.Year
-            End If
+            Dim retValue As List(Of CreditDebitAccount) = New List(Of CreditDebitAccount)
 
-            Dim retValue = New List(Of AccountCee)
+            Dim traverse As Action(Of AccountCee) = Sub(node As AccountCee)
+                                                        If (Not IsNothing(node)) Then
 
-            getAllSons().ForEach(Sub(n)
-                                     If (n.isLeaf) Then
-                                         n.calculateCreditDebit(year)
-                                         addOnParents(year, n)
-                                     End If
+                                                            If (node.isLeaf AndAlso Not node.Summary) Then
+                                                                node.calculateCreditDebit(year)
+                                                                addOnParents(year, node.Parent, node.creditDebit)
+                                                                retValue.Add(New CreditDebitAccount() With {.headFoot = HeadFood.BODY, .Code = node.Code, .Name = node.Name, .creditDebit = node.creditDebit})    'conto foglia
+                                                            Else
+                                                                Dim firstWithTotal = node.ID = ID AndAlso node.Total AndAlso Not node.isLeaf
+                                                                If (Not firstWithTotal) Then
+                                                                    'il nodo di partenza, se ha un totale viene escluso, diversamente si avrebbe un effetto di duplicazione rispetto al titolo del report
+                                                                    retValue.Add(New CreditDebitAccount() With {.headFoot = IIf(node.Total AndAlso Not node.isLeaf, HeadFood.HEAD_WIDTH_FOOD, HeadFood.HEAD_WIDTHOUT_FOOD), .Code = node.Code, .Name = node.Name, .creditDebit = node.creditDebit})    'conto padre (HEAD con o senza FOOD)
+                                                                End If
 
-                                     retValue.Add(n)    'conto
+                                                                If (Not node.isLeaf) Then
+                                                                    node.Sons.OrderBy(Function(a) a.SeqNo).ThenBy(Function(a) a.Code).ToList.ForEach(Sub(s) traverse(s))
+                                                                    If (node.Total) Then
+                                                                        retValue.Add(New CreditDebitAccount() With {.headFoot = HeadFood.FOOD, .Code = node.Code, .Name = node.Name, .creditDebit = node.creditDebit})    'conto padre (FOOD)
+                                                                    End If
 
-                                     If (n.isLeaf AndAlso n.isLastBrother()) Then
-                                         Dim parentsTotal As List(Of AccountCee) = n.getParentsTotal(ID)    ''righe totali
-                                         parentsTotal.ForEach(Sub(pt) retValue.Add(pt)) ''accoda i nodi total per cui il nodo corrente è l'ultimo figlio
-                                     End If
+                                                                End If
+                                                            End If
 
-                                 End Sub)
+                                                        End If
+                                                    End Sub
+            traverse(Me)
 
             Return retValue
 
