@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel.DataAnnotations
 Imports System.ComponentModel.DataAnnotations.Schema
+Imports Bilancio.DAL
 
 Namespace Models
 
@@ -17,6 +18,7 @@ Namespace Models
     End Enum
 
     Public Class Report
+        Implements EntityBase
 
         Public Property ID As Integer
 
@@ -44,16 +46,22 @@ Namespace Models
 
         Public Property OutFileName As String
 
+        <Display(Name:="Azione")>
+        Public Property ActioneName As String
+        <Display(Name:="Controllo")>
+        Public Property ControllerName As String
 
-        '<DataType(DataType.Date)>
-        '<DisplayFormat(DataFormatString:="{0:dd/MM/yyyy}", ApplyFormatInEditMode:=True)>
-        '<Display(Name:="Data Creazione")>
-        'Public Property dateCreated As DateTime = DateTime.Now
+        <DataType(DataType.DateTime)>
+        <DisplayFormat(DataFormatString:="{0:dd/MM/yyyy HH:mm:ss}", ApplyFormatInEditMode:=True)>
+        <Display(Name:="Data Creazione")>
+        <Editable(False)>
+        Public Property dateCreated As DateTime Implements EntityBase.dateCreated
 
-        '<DataType(DataType.Date)>
-        '<DisplayFormat(DataFormatString:="{0:dd/MM/yyyy}", ApplyFormatInEditMode:=True)>
-        '<Display(Name:="Ultimo Aggiornamento")>
-        'Public Property lastUpdate As DateTime = DateTime.Now
+        <DataType(DataType.DateTime)>
+        <DisplayFormat(DataFormatString:="{0:dd/MM/yyyy HH:mm:ss}", ApplyFormatInEditMode:=True)>
+        <Display(Name:="Ultimo Aggiornamento")>
+        <Editable(False)>
+        Public Property lastUpdate As DateTime Implements EntityBase.lastUpdate
 
     End Class
 
