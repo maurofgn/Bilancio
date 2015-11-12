@@ -1,0 +1,559 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Edmx Version="3.0" xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <Runtime>
+    <ConceptualModels>
+      <Schema Namespace="Bilancio.DAL" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AccountCee" customannotation:ClrType="Bilancio.Models.AccountCee, Bilancio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="SeqNo" Type="Int32" Nullable="false" />
+          <Property Name="Summary" Type="Boolean" Nullable="false" />
+          <Property Name="Total" Type="Boolean" Nullable="false" />
+          <Property Name="Debit" Type="Self.DareAvere" Nullable="false" />
+          <Property Name="NodeType" Type="Self.NodeType" Nullable="false" />
+          <Property Name="ParentID" Type="Int32" />
+          <NavigationProperty Name="AccountCharts" Relationship="Self.AccountChart_AccountCee" FromRole="AccountChart_AccountCee_Target" ToRole="AccountChart_AccountCee_Source" />
+          <NavigationProperty Name="Parent" Relationship="Self.AccountCee_Parent" FromRole="AccountCee_Parent_Source" ToRole="AccountCee_Parent_Target" />
+          <NavigationProperty Name="Sons" Relationship="Self.AccountCee_Parent" FromRole="AccountCee_Parent_Target" ToRole="AccountCee_Parent_Source" />
+        </EntityType>
+        <EntityType Name="AccountChart" customannotation:ClrType="Bilancio.Models.AccountChart, Bilancio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Debit" Type="Self.DareAvere" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="AccountCeeID" Type="Int32" />
+          <NavigationProperty Name="AccountCee" Relationship="Self.AccountChart_AccountCee" FromRole="AccountChart_AccountCee_Source" ToRole="AccountChart_AccountCee_Target" />
+          <NavigationProperty Name="DocumentRows" Relationship="Self.DocumentRow_AccountChart" FromRole="DocumentRow_AccountChart_Target" ToRole="DocumentRow_AccountChart_Source" />
+        </EntityType>
+        <EntityType Name="DocumentRow" customannotation:ClrType="Bilancio.Models.DocumentRow, Bilancio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="rowNr" Type="Int32" Nullable="false" />
+          <Property Name="debit" Type="Self.DareAvere" Nullable="false" />
+          <Property Name="amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="dateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="Document_ID" Type="Int32" Nullable="false" />
+          <Property Name="AccountChart_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AccountChart" Relationship="Self.DocumentRow_AccountChart" FromRole="DocumentRow_AccountChart_Source" ToRole="DocumentRow_AccountChart_Target" />
+          <NavigationProperty Name="Document" Relationship="Self.DocumentRow_Document" FromRole="DocumentRow_Document_Source" ToRole="DocumentRow_Document_Target" />
+        </EntityType>
+        <EntityType Name="Document" customannotation:ClrType="Bilancio.Models.Document, Bilancio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dateReg" Type="DateTime" Nullable="false" />
+          <Property Name="dateDoc" Type="DateTime" Nullable="false" />
+          <Property Name="docNr" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="DocumentType_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="documentRows" Relationship="Self.DocumentRow_Document" FromRole="DocumentRow_Document_Target" ToRole="DocumentRow_Document_Source" />
+          <NavigationProperty Name="documentType" Relationship="Self.DocumentType_Document" FromRole="DocumentType_Document_Target" ToRole="DocumentType_Document_Source" />
+        </EntityType>
+        <EntityType Name="DocumentType" customannotation:ClrType="Bilancio.Models.DocumentType, Bilancio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Document" Relationship="Self.DocumentType_Document" FromRole="DocumentType_Document_Source" ToRole="DocumentType_Document_Target" />
+        </EntityType>
+        <EntityType Name="Avis" customannotation:ClrType="Bilancio.Models.Avis, Bilancio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="dateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Region" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ContactName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Report" customannotation:ClrType="Bilancio.Models.Report, Bilancio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="ModelName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FormatType" Type="Self.ReportFormatType" />
+          <Property Name="OutFileName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ActioneName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ControllerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="dateCreated" Type="DateTime" Nullable="false" />
+          <Property Name="lastUpdate" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EnumType Name="DareAvere" IsFlags="false" customannotation:ClrType="Bilancio.Utility+DareAvere, Bilancio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" UnderlyingType="Int32">
+          <Member Name="Dare" Value="1" />
+          <Member Name="Avere" Value="-1" />
+        </EnumType>
+        <EnumType Name="NodeType" IsFlags="false" customannotation:ClrType="Bilancio.Models.NodeType, Bilancio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" UnderlyingType="Int32">
+          <Member Name="ROOT" Value="0" />
+          <Member Name="PATRIMONIALE" Value="1" />
+          <Member Name="ECONOMICO" Value="2" />
+          <Member Name="ATTIVO" Value="3" />
+          <Member Name="PASSIVO" Value="4" />
+          <Member Name="COSTI" Value="5" />
+          <Member Name="RICAVI" Value="6" />
+          <Member Name="ALTRO" Value="7" />
+        </EnumType>
+        <EnumType Name="ReportFormatType" IsFlags="false" customannotation:ClrType="Bilancio.Models.ReportFormatType, Bilancio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" UnderlyingType="Int32">
+          <Member Name="PDF" Value="0" />
+          <Member Name="HTML" Value="1" />
+          <Member Name="XML" Value="2" />
+          <Member Name="CSV" Value="3" />
+          <Member Name="XLS" Value="4" />
+          <Member Name="ODT" Value="5" />
+          <Member Name="ODS" Value="6" />
+          <Member Name="DOCX" Value="7" />
+          <Member Name="XLSX" Value="8" />
+          <Member Name="PPTX" Value="9" />
+        </EnumType>
+        <Association Name="AccountChart_AccountCee">
+          <End Role="AccountChart_AccountCee_Source" Type="Self.AccountChart" Multiplicity="*" />
+          <End Role="AccountChart_AccountCee_Target" Type="Self.AccountCee" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="AccountChart_AccountCee_Target">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AccountChart_AccountCee_Source">
+              <PropertyRef Name="AccountCeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DocumentRow_AccountChart">
+          <End Role="DocumentRow_AccountChart_Source" Type="Self.DocumentRow" Multiplicity="*" />
+          <End Role="DocumentRow_AccountChart_Target" Type="Self.AccountChart" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="DocumentRow_AccountChart_Target">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DocumentRow_AccountChart_Source">
+              <PropertyRef Name="AccountChart_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DocumentType_Document">
+          <End Role="DocumentType_Document_Source" Type="Self.DocumentType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DocumentType_Document_Target" Type="Self.Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentType_Document_Source">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DocumentType_Document_Target">
+              <PropertyRef Name="DocumentType_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DocumentRow_Document">
+          <End Role="DocumentRow_Document_Source" Type="Self.DocumentRow" Multiplicity="*" />
+          <End Role="DocumentRow_Document_Target" Type="Self.Document" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="DocumentRow_Document_Target">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DocumentRow_Document_Source">
+              <PropertyRef Name="Document_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AccountCee_Parent">
+          <End Role="AccountCee_Parent_Source" Type="Self.AccountCee" Multiplicity="*" />
+          <End Role="AccountCee_Parent_Target" Type="Self.AccountCee" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="AccountCee_Parent_Target">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AccountCee_Parent_Source">
+              <PropertyRef Name="ParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BilancioContext" customannotation:UseClrTypes="true">
+          <EntitySet Name="AccountCees" EntityType="Self.AccountCee" />
+          <EntitySet Name="AccountCharts" EntityType="Self.AccountChart" />
+          <EntitySet Name="DocumentRows" EntityType="Self.DocumentRow" />
+          <EntitySet Name="Documents" EntityType="Self.Document" />
+          <EntitySet Name="DocumentTypes" EntityType="Self.DocumentType" />
+          <EntitySet Name="Aviss" EntityType="Self.Avis" />
+          <EntitySet Name="Reports" EntityType="Self.Report" />
+          <AssociationSet Name="AccountChart_AccountCee" Association="Self.AccountChart_AccountCee">
+            <End Role="AccountChart_AccountCee_Source" EntitySet="AccountCharts" />
+            <End Role="AccountChart_AccountCee_Target" EntitySet="AccountCees" />
+          </AssociationSet>
+          <AssociationSet Name="DocumentRow_AccountChart" Association="Self.DocumentRow_AccountChart">
+            <End Role="DocumentRow_AccountChart_Source" EntitySet="DocumentRows" />
+            <End Role="DocumentRow_AccountChart_Target" EntitySet="AccountCharts" />
+          </AssociationSet>
+          <AssociationSet Name="DocumentType_Document" Association="Self.DocumentType_Document">
+            <End Role="DocumentType_Document_Source" EntitySet="DocumentTypes" />
+            <End Role="DocumentType_Document_Target" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="DocumentRow_Document" Association="Self.DocumentRow_Document">
+            <End Role="DocumentRow_Document_Source" EntitySet="DocumentRows" />
+            <End Role="DocumentRow_Document_Target" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="AccountCee_Parent" Association="Self.AccountCee_Parent">
+            <End Role="AccountCee_Parent_Source" EntitySet="AccountCees" />
+            <End Role="AccountCee_Parent_Target" EntitySet="AccountCees" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </ConceptualModels>
+    <Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CodeFirstDatabase" CdmEntityContainer="BilancioContext">
+          <EntitySetMapping Name="AccountCees">
+            <EntityTypeMapping TypeName="Bilancio.DAL.AccountCee">
+              <MappingFragment StoreEntitySet="AccountCee">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="SeqNo" ColumnName="SeqNo" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="NodeType" ColumnName="NodeType" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccountCharts">
+            <EntityTypeMapping TypeName="Bilancio.DAL.AccountChart">
+              <MappingFragment StoreEntitySet="AccountChart">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="AccountCeeID" ColumnName="AccountCeeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocumentRows">
+            <EntityTypeMapping TypeName="Bilancio.DAL.DocumentRow">
+              <MappingFragment StoreEntitySet="DocumentRow">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="rowNr" ColumnName="rowNr" />
+                <ScalarProperty Name="debit" ColumnName="debit" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
+                <ScalarProperty Name="Document_ID" ColumnName="Document_ID" />
+                <ScalarProperty Name="AccountChart_ID" ColumnName="AccountChart_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Documents">
+            <EntityTypeMapping TypeName="Bilancio.DAL.Document">
+              <MappingFragment StoreEntitySet="Document">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="dateReg" ColumnName="dateReg" />
+                <ScalarProperty Name="dateDoc" ColumnName="dateDoc" />
+                <ScalarProperty Name="docNr" ColumnName="docNr" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="DocumentType_ID" ColumnName="DocumentType_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocumentTypes">
+            <EntityTypeMapping TypeName="Bilancio.DAL.DocumentType">
+              <MappingFragment StoreEntitySet="DocumentType">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Aviss">
+            <EntityTypeMapping TypeName="Bilancio.DAL.Avis">
+              <MappingFragment StoreEntitySet="Avis">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reports">
+            <EntityTypeMapping TypeName="Bilancio.DAL.Report">
+              <MappingFragment StoreEntitySet="Report">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
+                <ScalarProperty Name="FormatType" ColumnName="FormatType" />
+                <ScalarProperty Name="OutFileName" ColumnName="OutFileName" />
+                <ScalarProperty Name="ActioneName" ColumnName="ActioneName" />
+                <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
+                <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
+                <ScalarProperty Name="lastUpdate" ColumnName="lastUpdate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </Mappings>
+    <StorageModels>
+      <Schema Namespace="CodeFirstDatabaseSchema" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AccountCee">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" customannotation:Index="{ Name: codeIndex, IsUnique: True }" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="SeqNo" Type="int" Nullable="false" />
+          <Property Name="Summary" Type="bit" Nullable="false" />
+          <Property Name="Total" Type="bit" Nullable="false" />
+          <Property Name="Debit" Type="int" Nullable="false" />
+          <Property Name="NodeType" Type="int" Nullable="false" />
+          <Property Name="ParentID" Type="int" customannotation:Index="{ Name: IX_ParentID, Order: 0 }" Nullable="true" />
+        </EntityType>
+        <EntityType Name="AccountChart">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" customannotation:Index="{ Name: codeIndex, IsUnique: True }" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Debit" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="AccountCeeID" Type="int" customannotation:Index="{ Name: IX_AccountCeeID, Order: 0 }" Nullable="true" />
+        </EntityType>
+        <EntityType Name="DocumentRow">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="rowNr" Type="int" Nullable="false" />
+          <Property Name="debit" Type="int" Nullable="false" />
+          <Property Name="amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="note" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="dateCreated" Type="datetime" Nullable="false" />
+          <Property Name="Document_ID" Type="int" customannotation:Index="{ Name: IX_Document_ID, Order: 0 }" Nullable="false" />
+          <Property Name="AccountChart_ID" Type="int" customannotation:Index="{ Name: IX_AccountChart_ID, Order: 0 }" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Document">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dateReg" Type="datetime" Nullable="false" />
+          <Property Name="dateDoc" Type="datetime" Nullable="false" />
+          <Property Name="docNr" Type="nvarchar" MaxLength="20" Nullable="true" />
+          <Property Name="note" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="DocumentType_ID" Type="int" customannotation:Index="{ Name: IX_DocumentType_ID, Order: 0 }" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DocumentType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" customannotation:Index="{ Name: codeIndex, IsUnique: True }" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Avis">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="dateCreated" Type="datetime" Nullable="false" />
+          <Property Name="Address" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="City" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="PostalCode" Type="nvarchar" MaxLength="5" Nullable="true" />
+          <Property Name="Region" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Phone" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="ContactName" Type="nvarchar(max)" Nullable="true" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" customannotation:Index="{ Name: codeIndex, IsUnique: True }" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="ModelName" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="FormatType" Type="int" Nullable="true" />
+          <Property Name="OutFileName" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="ActioneName" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="ControllerName" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="dateCreated" Type="datetime" Nullable="false" />
+          <Property Name="lastUpdate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="AccountChart_AccountCee">
+          <End Role="AccountCee" Type="Self.AccountCee" Multiplicity="0..1" />
+          <End Role="AccountChart" Type="Self.AccountChart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountCee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AccountChart">
+              <PropertyRef Name="AccountCeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DocumentRow_AccountChart">
+          <End Role="AccountChart" Type="Self.AccountChart" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DocumentRow" Type="Self.DocumentRow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountChart">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DocumentRow">
+              <PropertyRef Name="AccountChart_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DocumentType_Document">
+          <End Role="DocumentType" Type="Self.DocumentType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Document" Type="Self.Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="DocumentType_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DocumentRow_Document">
+          <End Role="Document" Type="Self.Document" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DocumentRow" Type="Self.DocumentRow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Document">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DocumentRow">
+              <PropertyRef Name="Document_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AccountCee_Parent">
+          <End Role="AccountCee" Type="Self.AccountCee" Multiplicity="0..1" />
+          <End Role="AccountCeeSelf" Type="Self.AccountCee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountCee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AccountCeeSelf">
+              <PropertyRef Name="ParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CodeFirstDatabase">
+          <EntitySet Name="AccountCee" EntityType="Self.AccountCee" Schema="dbo" Table="AccountCee" />
+          <EntitySet Name="AccountChart" EntityType="Self.AccountChart" Schema="dbo" Table="AccountChart" />
+          <EntitySet Name="DocumentRow" EntityType="Self.DocumentRow" Schema="dbo" Table="DocumentRow" />
+          <EntitySet Name="Document" EntityType="Self.Document" Schema="dbo" Table="Document" />
+          <EntitySet Name="DocumentType" EntityType="Self.DocumentType" Schema="dbo" Table="DocumentType" />
+          <EntitySet Name="Avis" EntityType="Self.Avis" Schema="dbo" Table="Avis" />
+          <EntitySet Name="Report" EntityType="Self.Report" Schema="dbo" Table="Report" />
+          <AssociationSet Name="AccountChart_AccountCee" Association="Self.AccountChart_AccountCee">
+            <End Role="AccountCee" EntitySet="AccountCee" />
+            <End Role="AccountChart" EntitySet="AccountChart" />
+          </AssociationSet>
+          <AssociationSet Name="DocumentRow_AccountChart" Association="Self.DocumentRow_AccountChart">
+            <End Role="AccountChart" EntitySet="AccountChart" />
+            <End Role="DocumentRow" EntitySet="DocumentRow" />
+          </AssociationSet>
+          <AssociationSet Name="DocumentType_Document" Association="Self.DocumentType_Document">
+            <End Role="DocumentType" EntitySet="DocumentType" />
+            <End Role="Document" EntitySet="Document" />
+          </AssociationSet>
+          <AssociationSet Name="DocumentRow_Document" Association="Self.DocumentRow_Document">
+            <End Role="Document" EntitySet="Document" />
+            <End Role="DocumentRow" EntitySet="DocumentRow" />
+          </AssociationSet>
+          <AssociationSet Name="AccountCee_Parent" Association="Self.AccountCee_Parent">
+            <End Role="AccountCee" EntitySet="AccountCee" />
+            <End Role="AccountCeeSelf" EntitySet="AccountCee" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </StorageModels>
+  </Runtime>
+  <Designer>
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="ProcessDependentTemplatesOnSave" Value="False" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <Diagrams >
+      <Diagram DiagramId="4f929a44ecc14ca2a0a1146d3595840f" Name="Diagram1">
+        <EntityTypeShape EntityType="Bilancio.DAL.AccountCee" Width="1.5" PointX="5.25" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Bilancio.DAL.AccountChart" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Bilancio.DAL.DocumentRow" Width="1.5" PointX="0.75" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Bilancio.DAL.Document" Width="1.5" PointX="0.75" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Bilancio.DAL.DocumentType" Width="1.5" PointX="2.875" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Bilancio.DAL.Avis" Width="1.5" PointX="4.75" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Bilancio.DAL.Report" Width="1.5" PointX="6.5" PointY="0.5" IsExpanded="true" />
+        <AssociationConnector Association="Bilancio.DAL.AccountChart_AccountCee" ManuallyRouted="false" />
+        <AssociationConnector Association="Bilancio.DAL.DocumentRow_AccountChart" ManuallyRouted="false" />
+        <AssociationConnector Association="Bilancio.DAL.DocumentType_Document" ManuallyRouted="false" />
+        <AssociationConnector Association="Bilancio.DAL.DocumentRow_Document" ManuallyRouted="false" />
+        <AssociationConnector Association="Bilancio.DAL.AccountCee_Parent" ManuallyRouted="false" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</Edmx>
