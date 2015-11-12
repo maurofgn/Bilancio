@@ -336,23 +336,6 @@
     <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 end section
 
-
-@*<form method="post">
-    <fieldset>
-        <legend>Anagrafica</legend>
-        <div class="controls-row">
-            @Html.TextBoxFor(Function(model) model.dateReg, New With {.class = "span1", .label = "Data Reg.", .placeholder = "Data Reg."})
-            @Html.TextBoxFor(Function(model) model.dateDoc, New With {.class = "span1", .label = "Data Doc.", .placeholder = "Data Documento"})
-            @Html.TextBoxFor(Function(model) model.docNr, New With {.class = "span1", .label = "Nr. Doc.", .placeholder = "Nr. doc."})
-            @Html.TextBoxFor(Function(model) model.amount, New With {.class = "span1", .label = "Tot. Doc.", .placeholder = "Tot. Documento"})
-        </div>
-        <div class="controls-row">
-            @Html.TextBoxFor(Function(model) model.note, New With {.class = "span2", .placeholder = "Note"})
-        </div>
-    </fieldset>
-</form>*@
-
-
 @Using Html.BeginForm()
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(True)
