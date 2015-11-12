@@ -61,7 +61,7 @@ Namespace Models
         'calcola e ritorna i totali del conto dalle righe documento che hanno l'anno compatibile
         Function calculateCreditDebit(year As Integer) As CreditDebit
 
-            _creditDebit = New CreditDebit(year)
+            _creditDebit = New CreditDebit(year, Debit)
 
             DocumentRows.Where(Function(a) a.Document.dateReg.Year = year Or a.Document.dateReg.Year = year - 1).ToList().ForEach(Sub(a) _creditDebit.addRow(a))
 
