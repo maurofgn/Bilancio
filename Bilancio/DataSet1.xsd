@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema id="BilancioDataSet1" targetNamespace="http://tempuri.org/BilancioDataSet1.xsd" xmlns:mstns="http://tempuri.org/BilancioDataSet1.xsd" xmlns="http://tempuri.org/BilancioDataSet1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+<xs:schema id="DataSet1" targetNamespace="http://tempuri.org/DataSet1.xsd" xmlns:mstns="http://tempuri.org/DataSet1.xsd" xmlns="http://tempuri.org/DataSet1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
   <xs:annotation>
     <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
       <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
         <Connections>
-          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="Bilancio" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="Bilancio (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.Bilancio.ConnectionString" Provider="System.Data.SqlClient" />
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="Bilancio_1ConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="Bilancio_1ConnectionString (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.Bilancio_1ConnectionString.ConnectionString" Provider="System.Data.SqlClient" />
         </Connections>
         <Tables>
           <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="AccountCeeTableAdapter" GeneratorDataComponentClassName="AccountCeeTableAdapter" Name="AccountCee" UserDataComponentName="AccountCeeTableAdapter">
             <MainSource>
-              <DbSource ConnectionRef="Bilancio (Web.config)" DbObjectName="dbo.AccountCee" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+              <DbSource ConnectionRef="Bilancio_1ConnectionString (Web.config)" DbObjectName="Bilancio_1.dbo.AccountCee" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
                 <DeleteCommand>
                   <DbCommand CommandType="Text" ModifiedByUser="false">
                     <CommandText>DELETE FROM [dbo].[AccountCee] WHERE (([ID] = @Original_ID))</CommandText>
@@ -75,7 +75,7 @@
           </TableAdapter>
           <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="AccountChartTableAdapter" GeneratorDataComponentClassName="AccountChartTableAdapter" Name="AccountChart" UserDataComponentName="AccountChartTableAdapter">
             <MainSource>
-              <DbSource ConnectionRef="Bilancio (Web.config)" DbObjectName="dbo.AccountChart" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+              <DbSource ConnectionRef="Bilancio_1ConnectionString (Web.config)" DbObjectName="Bilancio_1.dbo.AccountChart" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
                 <DeleteCommand>
                   <DbCommand CommandType="Text" ModifiedByUser="false">
                     <CommandText>DELETE FROM [dbo].[AccountChart] WHERE (([ID] = @Original_ID))</CommandText>
@@ -129,7 +129,7 @@
           </TableAdapter>
           <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="AvisTableAdapter" GeneratorDataComponentClassName="AvisTableAdapter" Name="Avis" UserDataComponentName="AvisTableAdapter">
             <MainSource>
-              <DbSource ConnectionRef="Bilancio (Web.config)" DbObjectName="dbo.Avis" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+              <DbSource ConnectionRef="Bilancio_1ConnectionString (Web.config)" DbObjectName="Bilancio_1.dbo.Avis" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
                 <DeleteCommand>
                   <DbCommand CommandType="Text" ModifiedByUser="false">
                     <CommandText>DELETE FROM [dbo].[Avis] WHERE (([ID] = @Original_ID))</CommandText>
@@ -198,7 +198,7 @@
           </TableAdapter>
           <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="DocumentTableAdapter" GeneratorDataComponentClassName="DocumentTableAdapter" Name="Document" UserDataComponentName="DocumentTableAdapter">
             <MainSource>
-              <DbSource ConnectionRef="Bilancio (Web.config)" DbObjectName="dbo.Document" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+              <DbSource ConnectionRef="Bilancio_1ConnectionString (Web.config)" DbObjectName="Bilancio_1.dbo.[Document]" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
                 <DeleteCommand>
                   <DbCommand CommandType="Text" ModifiedByUser="false">
                     <CommandText>DELETE FROM [dbo].[Document] WHERE (([ID] = @Original_ID))</CommandText>
@@ -255,7 +255,7 @@
           </TableAdapter>
           <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="DocumentRowTableAdapter" GeneratorDataComponentClassName="DocumentRowTableAdapter" Name="DocumentRow" UserDataComponentName="DocumentRowTableAdapter">
             <MainSource>
-              <DbSource ConnectionRef="Bilancio (Web.config)" DbObjectName="dbo.DocumentRow" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+              <DbSource ConnectionRef="Bilancio_1ConnectionString (Web.config)" DbObjectName="Bilancio_1.dbo.DocumentRow" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
                 <DeleteCommand>
                   <DbCommand CommandType="Text" ModifiedByUser="false">
                     <CommandText>DELETE FROM [dbo].[DocumentRow] WHERE (([ID] = @Original_ID))</CommandText>
@@ -315,7 +315,7 @@
           </TableAdapter>
           <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="DocumentTypeTableAdapter" GeneratorDataComponentClassName="DocumentTypeTableAdapter" Name="DocumentType" UserDataComponentName="DocumentTypeTableAdapter">
             <MainSource>
-              <DbSource ConnectionRef="Bilancio (Web.config)" DbObjectName="dbo.DocumentType" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+              <DbSource ConnectionRef="Bilancio_1ConnectionString (Web.config)" DbObjectName="Bilancio_1.dbo.DocumentType" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
                 <DeleteCommand>
                   <DbCommand CommandType="Text" ModifiedByUser="false">
                     <CommandText>DELETE FROM [dbo].[DocumentType] WHERE (([ID] = @Original_ID))</CommandText>
@@ -361,12 +361,81 @@
             </Mappings>
             <Sources />
           </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="ReportTableAdapter" GeneratorDataComponentClassName="ReportTableAdapter" Name="Report" UserDataComponentName="ReportTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="Bilancio_1ConnectionString (Web.config)" DbObjectName="Bilancio_1.dbo.Report" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <DeleteCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>DELETE FROM [dbo].[Report] WHERE (([ID] = @Original_ID))</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@Original_ID" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="ID" SourceColumnNullMapping="false" SourceVersion="Original" />
+                    </Parameters>
+                  </DbCommand>
+                </DeleteCommand>
+                <InsertCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>INSERT INTO [dbo].[Report] ([Code], [Name], [Active], [ModelName], [FormatType], [OutFileName], [ActioneName], [ControllerName], [dateCreated], [lastUpdate]) VALUES (@Code, @Name, @Active, @ModelName, @FormatType, @OutFileName, @ActioneName, @ControllerName, @dateCreated, @lastUpdate)</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@Code" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="Code" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@Name" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="Name" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Boolean" Direction="Input" ParameterName="@Active" Precision="0" ProviderType="Bit" Scale="0" Size="0" SourceColumn="Active" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@ModelName" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="ModelName" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@FormatType" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="FormatType" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@OutFileName" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="OutFileName" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@ActioneName" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="ActioneName" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@ControllerName" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="ControllerName" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="DateTime" Direction="Input" ParameterName="@dateCreated" Precision="0" ProviderType="DateTime" Scale="0" Size="0" SourceColumn="dateCreated" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="DateTime" Direction="Input" ParameterName="@lastUpdate" Precision="0" ProviderType="DateTime" Scale="0" Size="0" SourceColumn="lastUpdate" SourceColumnNullMapping="false" SourceVersion="Current" />
+                    </Parameters>
+                  </DbCommand>
+                </InsertCommand>
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT ID, Code, Name, Active, ModelName, FormatType, OutFileName, ActioneName, ControllerName, dateCreated, lastUpdate FROM dbo.Report</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+                <UpdateCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>UPDATE [dbo].[Report] SET [Code] = @Code, [Name] = @Name, [Active] = @Active, [ModelName] = @ModelName, [FormatType] = @FormatType, [OutFileName] = @OutFileName, [ActioneName] = @ActioneName, [ControllerName] = @ControllerName, [dateCreated] = @dateCreated, [lastUpdate] = @lastUpdate WHERE (([ID] = @Original_ID))</CommandText>
+                    <Parameters>
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@Code" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="Code" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@Name" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="Name" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Boolean" Direction="Input" ParameterName="@Active" Precision="0" ProviderType="Bit" Scale="0" Size="0" SourceColumn="Active" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@ModelName" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="ModelName" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@FormatType" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="FormatType" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@OutFileName" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="OutFileName" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@ActioneName" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="ActioneName" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="true" AutogeneratedName="" DataSourceName="" DbType="String" Direction="Input" ParameterName="@ControllerName" Precision="0" ProviderType="NVarChar" Scale="0" Size="0" SourceColumn="ControllerName" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="DateTime" Direction="Input" ParameterName="@dateCreated" Precision="0" ProviderType="DateTime" Scale="0" Size="0" SourceColumn="dateCreated" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="DateTime" Direction="Input" ParameterName="@lastUpdate" Precision="0" ProviderType="DateTime" Scale="0" Size="0" SourceColumn="lastUpdate" SourceColumnNullMapping="false" SourceVersion="Current" />
+                      <Parameter AllowDbNull="false" AutogeneratedName="" DataSourceName="" DbType="Int32" Direction="Input" ParameterName="@Original_ID" Precision="0" ProviderType="Int" Scale="0" Size="0" SourceColumn="ID" SourceColumnNullMapping="false" SourceVersion="Original" />
+                    </Parameters>
+                  </DbCommand>
+                </UpdateCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="ID" DataSetColumn="ID" />
+              <Mapping SourceColumn="Code" DataSetColumn="Code" />
+              <Mapping SourceColumn="Name" DataSetColumn="Name" />
+              <Mapping SourceColumn="Active" DataSetColumn="Active" />
+              <Mapping SourceColumn="ModelName" DataSetColumn="ModelName" />
+              <Mapping SourceColumn="FormatType" DataSetColumn="FormatType" />
+              <Mapping SourceColumn="OutFileName" DataSetColumn="OutFileName" />
+              <Mapping SourceColumn="ActioneName" DataSetColumn="ActioneName" />
+              <Mapping SourceColumn="ControllerName" DataSetColumn="ControllerName" />
+              <Mapping SourceColumn="dateCreated" DataSetColumn="dateCreated" />
+              <Mapping SourceColumn="lastUpdate" DataSetColumn="lastUpdate" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
         </Tables>
         <Sources />
       </DataSource>
     </xs:appinfo>
   </xs:annotation>
-  <xs:element name="BilancioDataSet1" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_DataSetName="BilancioDataSet1" msprop:Generator_UserDSName="BilancioDataSet1">
+  <xs:element name="DataSet1" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet1" msprop:Generator_UserDSName="DataSet1">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
         <xs:element name="AccountCee" msprop:Generator_TableClassName="AccountCeeDataTable" msprop:Generator_TableVarName="tableAccountCee" msprop:Generator_TablePropName="AccountCee" msprop:Generator_RowDeletingName="AccountCeeRowDeleting" msprop:Generator_RowChangingName="AccountCeeRowChanging" msprop:Generator_RowEvHandlerName="AccountCeeRowChangeEventHandler" msprop:Generator_RowDeletedName="AccountCeeRowDeleted" msprop:Generator_UserTableName="AccountCee" msprop:Generator_RowChangedName="AccountCeeRowChanged" msprop:Generator_RowEvArgName="AccountCeeRowChangeEvent" msprop:Generator_RowClassName="AccountCeeRow">
@@ -553,6 +622,59 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="Report" msprop:Generator_TableClassName="ReportDataTable" msprop:Generator_TableVarName="tableReport" msprop:Generator_TablePropName="Report" msprop:Generator_RowDeletingName="ReportRowDeleting" msprop:Generator_RowChangingName="ReportRowChanging" msprop:Generator_RowEvHandlerName="ReportRowChangeEventHandler" msprop:Generator_RowDeletedName="ReportRowDeleted" msprop:Generator_UserTableName="Report" msprop:Generator_RowChangedName="ReportRowChanged" msprop:Generator_RowEvArgName="ReportRowChangeEvent" msprop:Generator_RowClassName="ReportRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ID" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnVarNameInTable="columnID" msprop:Generator_ColumnPropNameInRow="ID" msprop:Generator_ColumnPropNameInTable="IDColumn" msprop:Generator_UserColumnName="ID" type="xs:int" />
+              <xs:element name="Code" msprop:Generator_ColumnVarNameInTable="columnCode" msprop:Generator_ColumnPropNameInRow="Code" msprop:Generator_ColumnPropNameInTable="CodeColumn" msprop:Generator_UserColumnName="Code">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="60" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Active" msprop:Generator_ColumnVarNameInTable="columnActive" msprop:Generator_ColumnPropNameInRow="Active" msprop:Generator_ColumnPropNameInTable="ActiveColumn" msprop:Generator_UserColumnName="Active" type="xs:boolean" />
+              <xs:element name="ModelName" msprop:Generator_ColumnVarNameInTable="columnModelName" msprop:Generator_ColumnPropNameInRow="ModelName" msprop:Generator_ColumnPropNameInTable="ModelNameColumn" msprop:Generator_UserColumnName="ModelName" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2147483647" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="FormatType" msprop:Generator_ColumnVarNameInTable="columnFormatType" msprop:Generator_ColumnPropNameInRow="FormatType" msprop:Generator_ColumnPropNameInTable="FormatTypeColumn" msprop:Generator_UserColumnName="FormatType" type="xs:int" minOccurs="0" />
+              <xs:element name="OutFileName" msprop:Generator_ColumnVarNameInTable="columnOutFileName" msprop:Generator_ColumnPropNameInRow="OutFileName" msprop:Generator_ColumnPropNameInTable="OutFileNameColumn" msprop:Generator_UserColumnName="OutFileName" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2147483647" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ActioneName" msprop:Generator_ColumnVarNameInTable="columnActioneName" msprop:Generator_ColumnPropNameInRow="ActioneName" msprop:Generator_ColumnPropNameInTable="ActioneNameColumn" msprop:Generator_UserColumnName="ActioneName" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2147483647" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ControllerName" msprop:Generator_ColumnVarNameInTable="columnControllerName" msprop:Generator_ColumnPropNameInRow="ControllerName" msprop:Generator_ColumnPropNameInTable="ControllerNameColumn" msprop:Generator_UserColumnName="ControllerName" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2147483647" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="dateCreated" msprop:Generator_ColumnVarNameInTable="columndateCreated" msprop:Generator_ColumnPropNameInRow="dateCreated" msprop:Generator_ColumnPropNameInTable="dateCreatedColumn" msprop:Generator_UserColumnName="dateCreated" type="xs:dateTime" />
+              <xs:element name="lastUpdate" msprop:Generator_ColumnVarNameInTable="columnlastUpdate" msprop:Generator_ColumnPropNameInRow="lastUpdate" msprop:Generator_ColumnPropNameInTable="lastUpdateColumn" msprop:Generator_UserColumnName="lastUpdate" type="xs:dateTime" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:choice>
     </xs:complexType>
     <xs:unique name="Constraint1" msdata:PrimaryKey="true">
@@ -577,6 +699,10 @@
     </xs:unique>
     <xs:unique name="DocumentType_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
       <xs:selector xpath=".//mstns:DocumentType" />
+      <xs:field xpath="mstns:ID" />
+    </xs:unique>
+    <xs:unique name="Report_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:Report" />
       <xs:field xpath="mstns:ID" />
     </xs:unique>
   </xs:element>
