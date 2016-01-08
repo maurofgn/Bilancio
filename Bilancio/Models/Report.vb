@@ -47,7 +47,7 @@ Namespace Models
         Public Property OutFileName As String
 
         <Display(Name:="Azione")>
-        Public Property ActioneName As String
+        Public Property ActionName As String
         <Display(Name:="Controllo")>
         Public Property ControllerName As String
 
