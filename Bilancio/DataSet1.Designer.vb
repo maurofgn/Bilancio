@@ -2707,7 +2707,7 @@ Partial Public Class DataSet1
 
         Private columnOutFileName As Global.System.Data.DataColumn
 
-        Private columnActioneName As Global.System.Data.DataColumn
+        Private columnActionName As Global.System.Data.DataColumn
 
         Private columnControllerName As Global.System.Data.DataColumn
 
@@ -2808,9 +2808,9 @@ Partial Public Class DataSet1
 
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
-        Public ReadOnly Property ActioneNameColumn() As Global.System.Data.DataColumn
+        Public ReadOnly Property ActionNameColumn() As Global.System.Data.DataColumn
             Get
-                Return Me.columnActioneName
+                Return Me.columnActionName
             End Get
         End Property
 
@@ -2913,7 +2913,7 @@ Partial Public Class DataSet1
             Me.columnModelName = MyBase.Columns("ModelName")
             Me.columnFormatType = MyBase.Columns("FormatType")
             Me.columnOutFileName = MyBase.Columns("OutFileName")
-            Me.columnActioneName = MyBase.Columns("ActioneName")
+            Me.columnActionName = MyBase.Columns("ActionName")
             Me.columnControllerName = MyBase.Columns("ControllerName")
             Me.columndateCreated = MyBase.Columns("dateCreated")
             Me.columnlastUpdate = MyBase.Columns("lastUpdate")
@@ -2936,8 +2936,8 @@ Partial Public Class DataSet1
             MyBase.Columns.Add(Me.columnFormatType)
             Me.columnOutFileName = New Global.System.Data.DataColumn("OutFileName", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnOutFileName)
-            Me.columnActioneName = New Global.System.Data.DataColumn("ActioneName", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnActioneName)
+            Me.columnActionName = New Global.System.Data.DataColumn("ActionName", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnActionName)
             Me.columnControllerName = New Global.System.Data.DataColumn("ControllerName", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnControllerName)
             Me.columndateCreated = New Global.System.Data.DataColumn("dateCreated", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
@@ -2958,7 +2958,7 @@ Partial Public Class DataSet1
             Me.columnActive.AllowDBNull = False
             Me.columnModelName.MaxLength = 2147483647
             Me.columnOutFileName.MaxLength = 2147483647
-            Me.columnActioneName.MaxLength = 2147483647
+            Me.columnActionName.MaxLength = 2147483647
             Me.columnControllerName.MaxLength = 2147483647
             Me.columndateCreated.AllowDBNull = False
             Me.columnlastUpdate.AllowDBNull = False
@@ -4099,13 +4099,13 @@ Partial Public Class DataSet1
         Public Property ActioneName() As String
             Get
                 Try
-                    Return CType(Me(Me.tableReport.ActioneNameColumn), String)
+                    Return CType(Me(Me.tableReport.ActionNameColumn), String)
                 Catch e As Global.System.InvalidCastException
                     Throw New Global.System.Data.StrongTypingException("Il valore della colonna 'ActioneName' nella tabella 'Report' è DBNull.", e)
                 End Try
             End Get
             Set(value As String)
-                Me(Me.tableReport.ActioneNameColumn) = value
+                Me(Me.tableReport.ActionNameColumn) = value
             End Set
         End Property
 
@@ -4185,13 +4185,13 @@ Partial Public Class DataSet1
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
         Public Function IsActioneNameNull() As Boolean
-            Return Me.IsNull(Me.tableReport.ActioneNameColumn)
+            Return Me.IsNull(Me.tableReport.ActionNameColumn)
         End Function
 
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
         Public Sub SetActioneNameNull()
-            Me(Me.tableReport.ActioneNameColumn) = Global.System.Convert.DBNull
+            Me(Me.tableReport.ActionNameColumn) = Global.System.Convert.DBNull
         End Sub
 
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
