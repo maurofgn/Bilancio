@@ -46,10 +46,10 @@ End Code
     </div>
 
     <div class="display-label">
-        @Html.DisplayNameFor(Function(model) model.ActioneName)
+        @Html.DisplayNameFor(Function(model) model.ActionName)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(Function(model) model.ActioneName)
+        @Html.DisplayFor(Function(model) model.ActionName)
     </div>
 
     <div class="display-label">

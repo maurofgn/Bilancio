@@ -27,7 +27,7 @@ End Code
             @Html.DisplayNameFor(Function(model) model.OutFileName)
         </th>
         <th>
-            @Html.DisplayNameFor(Function(model) model.ActioneName)
+            @Html.DisplayNameFor(Function(model) model.ActionName)
         </th>
         <th>
             @Html.DisplayNameFor(Function(model) model.ControllerName)
@@ -60,7 +60,7 @@ End Code
             @Html.DisplayFor(Function(modelItem) currentItem.OutFileName)
         </td>
         <td>
-            @Html.DisplayFor(Function(modelItem) currentItem.ActioneName)
+            @Html.DisplayFor(Function(modelItem) currentItem.ActionName)
         </td>
         <td>
             @Html.DisplayFor(Function(modelItem) currentItem.ControllerName)
@@ -75,7 +75,7 @@ End Code
             @Html.ActionLink("Edit", "Edit", New With {.id = currentItem.ID}) |
             @Html.ActionLink("Details", "Details", New With {.id = currentItem.ID}) |
             @Html.ActionLink("Delete", "Delete", New With {.id = currentItem.ID}) |
-            @Html.ActionLink("Esegui", currentItem.ActioneName, currentItem.ControllerName)
+            @Html.ActionLink("Esegui", currentItem.ActionName, currentItem.ControllerName)
         </td>
     </tr>
 Next

@@ -56,11 +56,11 @@ End Code
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(Function(model) model.ActioneName)
+            @Html.LabelFor(Function(model) model.ActionName)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(Function(model) model.ActioneName)
-            @Html.ValidationMessageFor(Function(model) model.ActioneName)
+            @Html.EditorFor(Function(model) model.ActionName)
+            @Html.ValidationMessageFor(Function(model) model.ActionName)
         </div>
 
         <div class="editor-label">
